@@ -2,6 +2,7 @@ import env from "#start/env"
 import jwt from "jsonwebtoken"
 import { HttpContext } from "@adonisjs/core/http"
 import User from "#models/user"
+import Ong from "#models/ong"
 
 export default class JwtService {
 
@@ -11,8 +12,18 @@ export default class JwtService {
 
 
 
-    static generateToken(user: User): string {
-        return jwt.sign({ userId: user.id, email: user.email }, this.JWT_SECRET, { expiresIn: this.JWT_EXPIRES_IN })
+    static generateToken(user: User | Ong): string {
+
+        if(user as User){
+            return jwt.sign({ userId: user.id, email: user.email }, this.JWT_SECRET, { expiresIn: this.JWT_EXPIRES_IN })
+        }
+
+        if (user as Ong) {
+            return jwt.sign({ ongId: user.id, email: user.email }, this.JWT_SECRET, { expiresIn: this.JWT_EXPIRES_IN })
+        }
+
+        throw new Error('Invalid user type')
+
     }
 
     static verifyToken(token:string): { userId: number } | null {
