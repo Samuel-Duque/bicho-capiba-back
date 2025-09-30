@@ -2,6 +2,7 @@ import { NextFn } from "@adonisjs/core/types/http"
 import type { HttpContext } from '@adonisjs/core/http'
 import JwtService from "#services/jwt_service"
 import User from "#models/user"
+import Ong from "#models/ong"
 
 export default class JwtAuthMiddleware {
     async handle(ctx: HttpContext, next: () => NextFn) {
@@ -16,8 +17,13 @@ export default class JwtAuthMiddleware {
             return ctx.response.status(401).json({ error: 'Invalid Token' })
         }
 
-
         const user = await User.findBy('id', decoded.userId)
+        const ong = await Ong.findBy('id', decoded.userId)
+
+        if(ong){
+            ctx.currentUser = ong
+            return next()
+        }
 
         if (!user) {
             JwtService.clearTokenCookie(ctx)
