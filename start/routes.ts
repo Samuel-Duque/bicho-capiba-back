@@ -9,6 +9,7 @@
 
 import router from '@adonisjs/core/services/router'
 import authRoutes from './routes/auth_routes.js'
+import ongsRoutes from './routes/ong_routes.js'
 
 router.get('/', async () => {
   return {
@@ -16,7 +17,9 @@ router.get('/', async () => {
   }})
 
 
-  
-authRoutes()
+router.group(() => {
+  authRoutes()
+  ongsRoutes()
+}).prefix('/api')
 
 
