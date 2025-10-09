@@ -2,7 +2,7 @@ import User from '#models/user'
 import JwtService from '#services/jwt_service'
 import type { HttpContext } from '@adonisjs/core/http'
 import { registerUserValidator } from '#validators/register_user'
-import cepFinder from '../helper/cep_finder.js'
+import brazilFinder from '../helper/brazil_finder.js'
 import CacheManager from '../helper/cache_manager.js'
 export default class AuthController {
    async register ({ request, response }: HttpContext){
@@ -13,7 +13,7 @@ export default class AuthController {
       user.email = email
       user.password = password
 
-      const {street, cep: CEP} = await cepFinder(cep)
+      const {street, cep: CEP} = await brazilFinder.cepFinder(cep)
       user.endereco = street
       user.CEP = CEP
 

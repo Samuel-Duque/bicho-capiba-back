@@ -2,7 +2,7 @@ import User from "#models/user";
 
 export default class UsersService {
     static async create(data: any) {
-        return 0;
+        return data;
     }
 
     static async list(){
@@ -10,8 +10,10 @@ export default class UsersService {
         return users
     }
 
-    static async findUser(UserId: string){
+    static async getUser(UserId: string){
         const user = await User.findByOrFail('uuid', UserId)
+
+        
         return user
     }
 

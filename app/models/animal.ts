@@ -1,9 +1,9 @@
 import { DateTime } from 'luxon'
 import { belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
-import Ong from '#models/ong'
 import File from '#models/file'
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import UUIDBaseModel from './uuid.js'
+import Ong from './ong.js'
 
 type AnimalSexo = 'M' | 'F'
 type AnimalPorte = 'Pequeno' | 'Medio' | 'Grande'
@@ -55,11 +55,14 @@ export default class Animal extends UUIDBaseModel {
   @column()
   declare sociavelPessoa: boolean | null
 
-  @hasMany(() => File)
-  declare fotos: HasMany<typeof File>
+  @column()
+  declare ongId: number
 
   @belongsTo(() => Ong)
   declare ong: BelongsTo<typeof Ong>
+
+  @hasMany(() => File)
+  declare fotos: HasMany<typeof File>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

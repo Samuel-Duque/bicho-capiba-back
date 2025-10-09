@@ -1,12 +1,12 @@
 meta {
-  name: Me
+  name: Store
   type: http
-  seq: 4
+  seq: 3
 }
 
-get {
-  url: {{BASE_URL}}/auth/me
-  body: none
+post {
+  url: {{BASE_URL}}/animal
+  body: json
   auth: inherit
 }
 

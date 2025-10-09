@@ -1,41 +1,53 @@
 import OngsService from '#services/ongs_service'
+import { registerOngValidator } from '#validators/register_ong'
 import type { HttpContext } from '@adonisjs/core/http'
+import { responseWithPagination, responseWithSuccess } from '../helper/api_response.js'
 
 export default class OngsController {
+    async index({ request, response }: HttpContext) {
+        try {
+            const page = request.input('page', 1)
+            const limit = request.input('limit', 10)
+            const ongs = await OngsService.list({ page, limit })
+
+            return responseWithPagination(response, ongs)
+        } catch (error) {
+            return response.status(error.status).json(error.message)
+        }
+    }
+    async show({ response, params }: HttpContext) {
+        try {
+            const { id } = params
+            const ong = await OngsService.getOng(id)
+
+            return responseWithSuccess(response, ong)
+        } catch (error) {
+            return response.status(error.status).json(error.message)
+        }
+    }
     async store({ request, response }: HttpContext) {
         try {
-            const data = request.body()
+            const data = await request.validateUsing(registerOngValidator)
             const ong = await OngsService.create(data)
-            return response.status(201).json(ong)
-        } catch (error) {
-            return response.status(error.status).json(error.message)
-        }
-    }
 
-    async index({ response }: HttpContext) {
+            return responseWithSuccess(response, ong)
+        } catch (error) {
+            return response.status(error.status).json(error.message)
+        }
+    }
+    async update({ response }: HttpContext) {
         try {
             
         } catch (error) {
             return response.status(error.status).json(error.message)
         }
     }
-    async show({ params, response }: HttpContext) {
+    async delete({ response, params }: HttpContext) {
         try {
-            
-        } catch (error) {
-            return response.status(error.status).json(error.message)
-        }
-    }
-    async update({ params, request, response }: HttpContext) {
-        try {
-            
-        } catch (error) {
-            return response.status(error.status).json(error.message)
-        }
-    }
-    async delete({ params, response }: HttpContext) {
-        try {
-            
+            const { id } = params;
+            const ong = await OngsService.delete(id)
+
+            return responseWithSuccess(response, ong)
         } catch (error) {
             return response.status(error.status).json(error.message)
         }

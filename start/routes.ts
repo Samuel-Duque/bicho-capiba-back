@@ -10,6 +10,7 @@
 import router from '@adonisjs/core/services/router'
 import authRoutes from './routes/auth_routes.js'
 import ongsRoutes from './routes/ong_routes.js'
+import animalsRoutes from './routes/animal_routes.js'
 
 router.get('/', async () => {
   return {
@@ -19,7 +20,8 @@ router.get('/', async () => {
 
 router.group(() => {
   authRoutes()
-  ongsRoutes()
+  ongsRoutes() // Add jwt auth after finishing development.
+  animalsRoutes() // Add jwt auth after finishing development.
 }).prefix('/api')
-
+  
 

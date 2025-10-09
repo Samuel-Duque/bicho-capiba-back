@@ -1,4 +1,4 @@
-import { BaseModel, beforeSave, column } from "@adonisjs/lucid/orm"
+import { BaseModel, beforeFetch, beforeFind, beforeSave, column, ModelQueryBuilder } from "@adonisjs/lucid/orm"
 import { randomUUID } from "crypto";
 
 export default class UUIDBaseModel extends BaseModel {
@@ -13,5 +13,14 @@ export default class UUIDBaseModel extends BaseModel {
     if (!model.uuid) {
       model.uuid = randomUUID();
     }
+  }
+  
+  @beforeFind()
+  @beforeFetch()
+  public static applySoftDeleteToQuery(
+    query: ModelQueryBuilder
+  ) {
+    const table = query.model.table;
+    query.whereNull(`${table}.deleted_at`);
   }
 }

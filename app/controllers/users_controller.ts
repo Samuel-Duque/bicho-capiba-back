@@ -34,14 +34,14 @@ export default class UsersController {
 
   async show({ response, params }: HttpContext) {
     try {
-      const user = await UsersService.findUser(params.id)
+      const user = await UsersService.getUser(params.id)
       return response.status(200).json(user)
     } catch (error) {
       return response.status(error.status).json(error.message)
     }
   }
 
-  async update({ response, params, request }: HttpContext) {
+  async update({ response }: HttpContext) {
     try {
       
     } catch (error) {
@@ -49,7 +49,7 @@ export default class UsersController {
     }
   }
 
-  async destroy({ response, params }: HttpContext) {
+  async destroy({ response }: HttpContext) {
     try {
       
     } catch (error) {

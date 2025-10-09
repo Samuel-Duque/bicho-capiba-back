@@ -1,13 +1,17 @@
 meta {
-  name: Me
+  name: Show
   type: http
-  seq: 4
+  seq: 2
 }
 
 get {
-  url: {{BASE_URL}}/auth/me
+  url: {{BASE_URL}}/animal/:id
   body: none
   auth: inherit
+}
+
+params:path {
+  id: 
 }
 
 settings {

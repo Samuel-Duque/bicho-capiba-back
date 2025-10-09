@@ -1,13 +1,17 @@
 meta {
-  name: Logout
+  name: Update
   type: http
-  seq: 3
+  seq: 4
 }
 
-post {
-  url: {{BASE_URL}}/auth/logout
+put {
+  url: {{BASE_URL}}/animal/:id
   body: json
   auth: inherit
+}
+
+params:path {
+  id: 
 }
 
 settings {

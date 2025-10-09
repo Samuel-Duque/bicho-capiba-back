@@ -1,0 +1,29 @@
+meta {
+  name: Index
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{BASE_URL}}/ongs
+  body: multipartForm
+  auth: inherit
+}
+
+body:json {
+  {
+    "fullName": "zeandrade", 
+    "email": "ze@gmail.com",
+    "password": "capiba",
+    "cep":"54737-040"
+  }
+}
+
+body:file {
+  file: @file(/home/sam/Downloads/claude_monet.jpg) @contentType(image/jpeg)
+  ~file: @file(/home/sam/Downloads/download.jpeg) @contentType(image/jpeg)
+}
+
+settings {
+  encodeUrl: true
+}

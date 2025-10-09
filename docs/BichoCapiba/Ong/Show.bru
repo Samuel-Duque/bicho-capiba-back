@@ -1,13 +1,17 @@
 meta {
-  name: Store
+  name: Show
   type: http
-  seq: 3
+  seq: 2
 }
 
-post {
-  url: {{BASE_URL}}/ongs
-  body: multipartForm
+get {
+  url: {{BASE_URL}}/ongs/:id
+  body: none
   auth: inherit
+}
+
+params:path {
+  id: 2c8afc81-a5df-4928-a28b-179779eeff9a
 }
 
 body:multipart-form {
@@ -17,7 +21,7 @@ body:multipart-form {
   cep: 51170530
   cnpj: 44848048/0001-87
   telefone: 81991790462
-  image: @file(/home/sam/Downloads/download.jpeg)
+  ~: @file(/home/sam/Downloads/download.jpeg)
 }
 
 settings {

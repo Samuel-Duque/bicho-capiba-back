@@ -22,7 +22,7 @@ export default class extends BaseSchema {
       table.enum('status_animal', ['Disponivel', 'Adotado', 'Pendente']).notNullable()
       table.boolean('sociavel_animal').nullable()
       table.boolean('sociavel_pessoa').nullable()
-      table.integer('ong_id')
+      table.integer('ong_id').unsigned().references('id').inTable('ongs').notNullable().onDelete('CASCADE')
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').notNullable()
