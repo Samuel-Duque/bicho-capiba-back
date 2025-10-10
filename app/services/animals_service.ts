@@ -51,7 +51,7 @@ export default class AnimalsService {
         const animal = await Animal.query().where('uuid', animalId).preload('fotos', (query) => {
             query.whereNull('deleted_at').select('id', 'url')
         }).preload('ong', (query) => {
-            query.select('id', 'nome', 'email', 'telefone', 'imagem_perfil')
+            query.select('id', 'nome', 'email', 'telefone')
         }).firstOrFail()
 
         return animal
@@ -64,7 +64,7 @@ export default class AnimalsService {
                 query.whereNull('deleted_at').select('id', 'url')
             })
             .preload('ong', (query) => {
-                query.select('id', 'nome', 'email', 'telefone', 'imagem_perfil')
+                query.select('id', 'nome', 'email', 'telefone')
             })
             .paginate(pagination.page, pagination.limit)
 

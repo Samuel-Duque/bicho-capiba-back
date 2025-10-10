@@ -13,7 +13,7 @@ export default class AnimalsController {
 
     return responseWithPagination(response, data)
     } catch (error) {
-      
+      return response.status(400).json({ message: 'Error fetching animals', error: error.message })
     }
   }
 
