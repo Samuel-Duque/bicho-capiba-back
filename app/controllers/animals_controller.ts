@@ -3,6 +3,7 @@ import { responseWithPagination, responseWithSuccess } from '../helper/api_respo
 import AnimalsService from '#services/animals_service';
 import { RegisterAnimalValidator } from '#validators/register_animal';
 import Ong from '#models/ong';
+import AppError from '../helper/app_error.js';
 
 export default class AnimalsController {
   async index({request, response}: HttpContext) {
@@ -20,7 +21,9 @@ export default class AnimalsController {
   async store({ request, response, currentUser }: HttpContext) {
     try {
       const ong = currentUser! as Ong
-      console.log(ong)
+      if (!ong) {
+        throw AppError.E_UNAUTHORIZED('Ong not authenticated');
+      }
       const data = await request.validateUsing(RegisterAnimalValidator)
       const animal = await AnimalsService.create(data, ong)
 

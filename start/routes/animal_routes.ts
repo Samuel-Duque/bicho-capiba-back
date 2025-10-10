@@ -6,9 +6,9 @@ export default function animalsRoutes() {
 
     router.group(() => {
         router.get('/', [AnimalsController, 'index'])
-        router.post('/', [AnimalsController, 'store'])
+        router.post('/', [AnimalsController, 'store']).use(middleware.jwt())
         router.get('/:id', [AnimalsController, 'show'])
-        router.put('/:id', [AnimalsController, 'update'])
-        router.delete('/:id', [AnimalsController, 'destroy'])
-    }).prefix('/animals').use(middleware.jwt())
+        router.put('/:id', [AnimalsController, 'update']).use(middleware.jwt())
+        router.delete('/:id', [AnimalsController, 'destroy']).use(middleware.jwt())
+    }).prefix('/animals')
 }
