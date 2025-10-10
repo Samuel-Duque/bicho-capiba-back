@@ -58,13 +58,15 @@ export default class AnimalsService {
     }
 
     static async list(pagination: { page: number, limit: number }) {
-        const animals = await Animal.query()
+        const animals = await Animal.query().select([
+            'id', 'uuid', 'nome', 'idade', 'sexo', 'raca', 'ong_id'
+        ])
             .whereNull('deleted_at')
             .preload('fotos', (query) => {
                 query.whereNull('deleted_at').select('id', 'url')
             })
             .preload('ong', (query) => {
-                query.select('id', 'nome', 'email', 'telefone')
+                query.select('id', 'nome', 'email', 'telefone','endereco')
             })
             .paginate(pagination.page, pagination.limit)
 
@@ -73,6 +75,12 @@ export default class AnimalsService {
 
     static async edit(animalId: string, data: any) {
         const animal = await Animal.findByOrFail('uuid', animalId)
+
+        if (data.images) {
+            const imagePath = await ImageUpload.upload(data.images, 'animals')
+            await animal.related('fotos').create({ url: imagePath, extname: '' })
+        }
+
         animal.merge(data)
         await animal.save()
 

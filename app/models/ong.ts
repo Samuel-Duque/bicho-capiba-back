@@ -30,7 +30,28 @@ export default class Ong extends compose(UUIDBaseModel, AuthFinder) {
   declare descricao: string | null
 
   @column()
-  declare endereco: string | null
+  declare bairro: string | null
+
+  @column()
+  declare rua : string | null
+
+  @column()
+  declare numero: string | null
+
+  @column()
+  declare cidade: string | null
+
+  @column()
+  declare estado: string | null
+
+  @column()
+  declare complemento: string | null
+
+  @column()
+  declare latitude: string | null
+  
+  @column()
+  declare longitude: string | null
 
   @column()
   declare CEP: string | null

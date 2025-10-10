@@ -4,6 +4,7 @@ import AnimalsService from '#services/animals_service';
 import { RegisterAnimalValidator } from '#validators/register_animal';
 import Ong from '#models/ong';
 import AppError from '../helper/app_error.js';
+import { UpdateAnimalValidator } from '#validators/update_animal';
 
 export default class AnimalsController {
   async index({request, response}: HttpContext) {
@@ -44,13 +45,15 @@ export default class AnimalsController {
     }
   }
   
-  async update({ response }: HttpContext) {
+  async update({ request, response, params }: HttpContext) {
     try {
-      const data = 0;
+      const { id } = params
+      const data = await request.validateUsing(UpdateAnimalValidator)
+      const animal = await AnimalsService.edit(id, data)
 
-    return responseWithSuccess(response, data)
+    return responseWithSuccess(response, animal)
     } catch (error) {
-      
+      return response.status(400).json({ message: 'Error updating animal', error: error.message })
     }
   }
 
