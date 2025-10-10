@@ -44,7 +44,7 @@ export default class AnimalsController {
     }
   }
   
-  async update({ response, params, request }: HttpContext) {
+  async update({ response }: HttpContext) {
     try {
       const data = 0;
 
