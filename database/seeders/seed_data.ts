@@ -67,7 +67,6 @@ export default class SeedData extends BaseSeeder {
       },
     ])
 
-    // Removed unused variable warning for users
     console.log(`Created ${users.length} users.`)
 
     const animals = await Animal.createMany(
@@ -91,7 +90,6 @@ export default class SeedData extends BaseSeeder {
       }))
     )
 
-    // Add photos for each animal
     for (const animal of animals) {
       await File.create({
         url: `https://picsum.photos/seed/animal-${animal.id}/300/200`,
