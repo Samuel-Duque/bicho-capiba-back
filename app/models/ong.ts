@@ -6,6 +6,7 @@ import type { HasMany } from '@adonisjs/lucid/types/relations'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import UUIDBaseModel from './uuid.js'
 import Animal from './animal.js'
+import File from './file.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -40,8 +41,8 @@ export default class Ong extends compose(UUIDBaseModel, AuthFinder) {
   @column()
   declare responsavelTecnico: string | null
   
-  @column() 
-  declare imagem_perfil: string | null
+  @hasMany(() => File)
+  declare fotos: HasMany<typeof File>
 
   @column({ serializeAs: null })
   declare password: string

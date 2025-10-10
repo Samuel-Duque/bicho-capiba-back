@@ -6,6 +6,7 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
+      table.string('uuid').notNullable().unique()
       table.string('url')
       table.enum('type', ['MEDIA', 'VIDEO']).notNullable()
       table.integer('animal_id').unsigned().references('id').inTable('animals').onDelete('CASCADE')

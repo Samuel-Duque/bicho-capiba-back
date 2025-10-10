@@ -15,20 +15,20 @@ export default class JwtService {
     static generateToken(user: User | Ong): string {
 
         if(user as User){
-            return jwt.sign({ userId: user.id, email: user.email }, this.JWT_SECRET, { expiresIn: this.JWT_EXPIRES_IN })
+            return jwt.sign({ userId: user.uuid, email: user.email }, this.JWT_SECRET, { expiresIn: this.JWT_EXPIRES_IN })
         }
 
         if (user as Ong) {
-            return jwt.sign({ ongId: user.id, email: user.email }, this.JWT_SECRET, { expiresIn: this.JWT_EXPIRES_IN })
+            return jwt.sign({ userId: user.uuid, email: user.email }, this.JWT_SECRET, { expiresIn: this.JWT_EXPIRES_IN })
         }
 
         throw new Error('Invalid user type')
 
     }
 
-    static verifyToken(token:string): { userId: number } | null {
+    static verifyToken(token:string): { userId: string } | null {
         try {
-            const decoded = jwt.verify(token, this.JWT_SECRET) as { userId: number }
+            const decoded = jwt.verify(token, this.JWT_SECRET) as { userId: string }
             return decoded
         } catch (error) {
             return null

@@ -55,7 +55,7 @@ export default class Animal extends UUIDBaseModel {
   @column()
   declare sociavelPessoa: boolean | null
 
-  @column()
+  @column({ serializeAs: null })
   declare ongId: number
 
   @belongsTo(() => Ong)

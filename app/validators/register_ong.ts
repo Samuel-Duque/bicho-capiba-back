@@ -8,6 +8,6 @@ export const registerOngValidator = vine.compile(
         cnpj: vine.string().minLength(14).maxLength(18),
         telefone: vine.string().minLength(10).maxLength(11),
         cep: vine.string().minLength(8).maxLength(9),
-        image: vine.file().optional()
+        images: vine.file().optional() 
     })
 )

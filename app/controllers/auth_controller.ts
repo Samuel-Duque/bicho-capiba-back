@@ -4,6 +4,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { registerUserValidator } from '#validators/register_user'
 import brazilFinder from '../helper/brazil_finder.js'
 import CacheManager from '../helper/cache_manager.js'
+import Ong from '#models/ong'
 export default class AuthController {
    async register ({ request, response }: HttpContext){
     try {
@@ -32,12 +33,23 @@ export default class AuthController {
   async login({ request, response }: HttpContext) {
 
     const { email, password } = request.only(['email', 'password'])
-    const user = await User.verifyCredentials(email, password)
-    const token = JwtService.generateToken(user)
 
+    const results = await Promise.allSettled([
+      User.verifyCredentials(email, password),
+      Ong.verifyCredentials(email, password)
+    ])
+    const user = results[0].status === 'fulfilled' ? results[0].value : null
+    const ong = results[1].status === 'fulfilled' ? results[1].value : null
+
+    if (!user && !ong) {
+      return response.status(401).json({ error: 'Invalid credentials' })
+    }
+    
+    const authUser = user! || ong!
+    const token = JwtService.generateToken(authUser)
     JwtService.setAuthCoookie({ response } as HttpContext, token)
 
-    return response.status(200).json({ user, token })
+    return response.status(200).json({ authUser, token })
   }
 
   async logout({ response }: HttpContext) {
@@ -47,7 +59,7 @@ export default class AuthController {
   }
 
   async me({ response, currentUser }: HttpContext) {
-    const cacheKey = `user:${currentUser?.id}`
+    const cacheKey = `user:${currentUser?.uuid}`
     const cachedUser = await CacheManager.get(cacheKey)
 
     if (cachedUser) {

@@ -5,9 +5,47 @@ meta {
 }
 
 post {
-  url: {{BASE_URL}}/animal
-  body: json
+  url: {{BASE_URL}}/animals
+  body: multipartForm
   auth: inherit
+}
+
+body:json {
+  {
+    "nome": "Luna",
+    "idade": 3,
+    "sexo": "F",
+    "porte": "Medio",
+    "cor": "Branco e marrom",
+    "especie": "Cachorro",
+    "raca": "Vira-lata",
+    "data_nascimento": "2022-05-14",
+    "vacinas": "V8, Antirrábica, Gripe Canina",
+    "castrado": true,
+    "necessidades_especiais": "Nenhuma",
+    "historia": "Luna foi resgatada de uma situação de abandono e hoje é uma cachorrinha alegre e dócil. Adora brincar com outros cães e crianças.",
+    "status_animal": "Disponivel",
+    "sociavel_animal": true,
+    "sociavel_pessoa": true
+  }
+}
+
+body:multipart-form {
+  nome: Luna
+  idade: 3
+  sexo: F
+  porte: Medio
+  cor: Branco e marrom
+  especie: Cachorro
+  raca: Vira-lata
+  data_nascimento: 2022-05-14
+  vacinas: V8
+  castrado: true
+  necessidades_especiais: Nenhuma
+  historia: Luna foi resgatada de uma situação de abandono e hoje é uma cachorrinha alegre e dócil. Adora brincar com outros cães e crianças.
+  sociavel_animal: true
+  sociavel_pessoa: false
+  images: @file(/home/samuca/Downloads/gato.png)
 }
 
 settings {

@@ -1,3 +1,4 @@
+import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 
 export default function animalsRoutes() {
@@ -9,5 +10,5 @@ export default function animalsRoutes() {
         router.get('/:id', [AnimalsController, 'show'])
         router.put('/:id', [AnimalsController, 'update'])
         router.delete('/:id', [AnimalsController, 'destroy'])
-    }).prefix('/animals')
+    }).prefix('/animals').use(middleware.jwt())
 }

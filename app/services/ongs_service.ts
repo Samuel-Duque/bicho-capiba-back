@@ -19,10 +19,11 @@ export default class OngsService {
         ong.CEP = data.cep
         ong.cnpj = data.cnpj
         ong.telefone = data.telefone
-        
-        if (data.image) {
-            const imagePath = await ImageUpload.upload(data.image)
-            ong.imagem_perfil = imagePath
+        console.log(data)
+        if (data.images) {
+            const imagePath = await ImageUpload.upload(data.images, 'ongs')
+            console.log(imagePath)
+            await ong.related('fotos').create({ url: imagePath })
         }
 
         await ong.save()
@@ -36,8 +37,10 @@ export default class OngsService {
         if (cachedOng) {
             return cachedOng;
         }
-     
-        const ong = await Ong.query().where('uuid', OngId).preload('animals').firstOrFail()
+
+        const ong = await Ong.query().where('uuid', OngId).preload('fotos', (query) => {
+            query.whereNull('deleted_at').select('id', 'url')
+        }).preload('animals').firstOrFail()
         await CacheManager.create(cacheKey, JSON.stringify(ong));
 
         return ong;
@@ -45,14 +48,29 @@ export default class OngsService {
 
     static async list(pagination: { page: number, limit: number }) {
         const ongs = await Ong.query()
-            .whereNull('deleted_at')
-            .preload('animals')
+            .whereNull('deleted_at').preload('fotos', (query) => {
+                query.whereNull('deleted_at').select('id', 'url')
+            })
+            .preload('animals', (query) => {
+                query.whereNull('deleted_at').select('*')
+            })
             .paginate(pagination.page, pagination.limit)
 
         return ongs;
     }
 
-    static async edit(OngId: string, data: any) {}
+    static async edit(OngId: string, data: any) {
+        const ong = await Ong.findByOrFail('uuid', OngId)
+        ong.merge(data)
+
+        if (data.image) {
+            const imagePath = await ImageUpload.upload(data.image)
+            await ong.related('fotos').create({ url: imagePath })
+        }
+
+        await ong.save()
+        return ong;
+    }
 
     static async delete(OngId: string) {
         const ong = await Ong.findByOrFail('uuid', OngId)

@@ -17,7 +17,6 @@ export default class extends BaseSchema {
       table.integer('quantidade_animais').nullable()
       table.string('responsavel_tecnico').nullable()
       table.string('password').notNullable()
-      table.string('imagem_perfil').nullable()
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').notNullable()

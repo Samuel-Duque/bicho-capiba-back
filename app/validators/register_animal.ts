@@ -14,8 +14,8 @@ export const RegisterAnimalValidator = vine.compile(
         castrado: vine.boolean().optional(),
         necessidades_especiais: vine.string().maxLength(200).optional(), // Opcional
         historia: vine.string().maxLength(500).optional(), // Opcional
-        status_animal: vine.enum(['Disponivel', 'Adotado', 'Pendente']),
         sociavel_animal: vine.boolean().optional(), // Opcional
         sociavel_pessoa: vine.boolean().optional(), // Opcional
+        images: vine.file().optional() // Opcional
     })
 )

@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { responseWithPagination, responseWithSuccess } from '../helper/api_response.js';
 import AnimalsService from '#services/animals_service';
 import { RegisterAnimalValidator } from '#validators/register_animal';
+import Ong from '#models/ong';
 
 export default class AnimalsController {
   async index({request, response}: HttpContext) {
@@ -16,23 +17,27 @@ export default class AnimalsController {
     }
   }
 
-  async store({ request, response }: HttpContext) {
+  async store({ request, response, currentUser }: HttpContext) {
     try {
-      const data = request.validateUsing(RegisterAnimalValidator)
+      const ong = currentUser! as Ong
+      console.log(ong)
+      const data = await request.validateUsing(RegisterAnimalValidator)
+      const animal = await AnimalsService.create(data, ong)
 
-    return responseWithSuccess(response, data)
+    return responseWithSuccess(response, animal)
     } catch (error) {
-      
+      return response.status(400).json({ message: 'Error creating animal', error: error })
     }
   }
 
   async show({ response, params }: HttpContext) {
     try {
-      const data = 0;
+      const { id } = params
+      const data = await AnimalsService.getAnimal(id)
 
     return responseWithSuccess(response, data)
     } catch (error) {
-      
+      return response.status(400).json({ message: 'Error fetching animal', error: error.message })
     }
   }
   
@@ -48,11 +53,12 @@ export default class AnimalsController {
 
   async destroy({ response, params }: HttpContext) {
     try {
-      const data = 0;
+      const { id } = params
+      const data = await AnimalsService.delete(id)
 
     return responseWithSuccess(response, data)
     } catch (error) {
-      
+      return response.status(400).json({ message: 'Error deleting animal', error: error.message })
     }
   }
 }

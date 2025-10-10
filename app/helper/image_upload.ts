@@ -4,9 +4,11 @@ import { MultipartFile } from '@adonisjs/core/types/bodyparser'
 import drive from '@adonisjs/drive/services/main'
 import { createReadStream } from 'node:fs'
 
+type FilePath = 'images' | 'animals' | 'ongs'
+
 export default class ImageUpload {
-  
-  static async upload(image: MultipartFile, path = 'images') {
+
+  static async upload(image: MultipartFile, path: FilePath = 'images') {
     if (!image || !image.isValid) {
       throw new Error('Invalid image file')
     }
