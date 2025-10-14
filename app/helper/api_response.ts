@@ -9,10 +9,10 @@ export function responseWithPagination(
     status: 'OK',
     result: result.data || [],
     pagination: {
-      page: result.meta.current_page,
-      lastPage: result.meta.last_page,
+      page: result.meta.currentPage,
+      lastPage: result.meta.lastPage,
       total: result.meta.total,
-      perPage: result.meta.per_page,
+      perPage: result.meta.perPage,
     },
     ...extras,
     error: null,
