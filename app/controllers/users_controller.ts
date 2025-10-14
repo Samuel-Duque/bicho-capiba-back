@@ -1,22 +1,21 @@
-import User from '#models/user'
-import UsersService from '#services/users_service'
-import type { HttpContext } from '@adonisjs/core/http'
+import User from '#models/user';
+import UsersService from '#services/users_service';
+import type { HttpContext } from '@adonisjs/core/http';
 
 export default class UsersController {
-
   async index({ response, currentUser }: HttpContext) {
     try {
-      const user = currentUser as User
+      const user = currentUser as User;
 
       if (!user.superUser) {
-        return response.status(403).json({ message: 'Forbidden' })
+        return response.status(403).json({ message: 'Forbidden' });
       }
 
-      const users = await UsersService.list()
-      
-      return response.status(200).json(users)
+      const users = await UsersService.list();
+
+      return response.status(200).json(users);
     } catch (error) {
-      return response.status(error.status).json(error.message)
+      return response.status(error.status).json(error.message);
     }
   }
 
@@ -34,26 +33,24 @@ export default class UsersController {
 
   async show({ response, params }: HttpContext) {
     try {
-      const user = await UsersService.getUser(params.id)
-      return response.status(200).json(user)
+      const user = await UsersService.getUser(params.id);
+      return response.status(200).json(user);
     } catch (error) {
-      return response.status(error.status).json(error.message)
+      return response.status(error.status).json(error.message);
     }
   }
 
   async update({ response }: HttpContext) {
     try {
-      
     } catch (error) {
-      return response.status(error.status).json(error.message)
+      return response.status(error.status).json(error.message);
     }
   }
 
   async destroy({ response }: HttpContext) {
     try {
-      
     } catch (error) {
-      return response.status(error.status).json(error.message)
+      return response.status(error.status).json(error.message);
     }
   }
 }
