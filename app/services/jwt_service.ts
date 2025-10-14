@@ -38,8 +38,8 @@ export default class JwtService {
     static setAuthCoookie(ctx: HttpContext, token: string): void {
         ctx.response.cookie(this.COOKIE_NAME, token, {
             httpOnly: true,
-            secure: env.get('NODE_ENV') === 'production',
-            sameSite: 'strict',
+            secure: true,
+            sameSite: 'none',
             maxAge: 30 * 24 * 60 * 60 * 1000
         })
     }
