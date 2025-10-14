@@ -93,7 +93,7 @@ export default class SeedData extends BaseSeeder {
     const animals = await Animal.createMany(
       Array.from({ length: 20 }).map((_, index) => ({
         nome: `Animal ${index + 1}`,
-        idade: Math.floor(Math.random() * 15) + 1,
+        idade:(Math.floor(Math.random() * 15) + 1).toString(),
         sexo: (index % 2 === 0 ? 'M' : 'F') as 'M' | 'F',
         porte: ['Pequeno', 'Medio', 'Grande'][Math.floor(Math.random() * 3)] as 'Pequeno' | 'Medio' | 'Grande',
         cor: ['Preto', 'Branco', 'Marrom'][Math.floor(Math.random() * 3)],
@@ -112,8 +112,16 @@ export default class SeedData extends BaseSeeder {
     )
 
     for (const animal of animals) {
+      const availableAdjectives = ['cute', 'lovely', 'endearing', 'black', 'white', 'brown', 'fluffy', 'sweet', 'sleep', 'playful']
+      
+      const numberOfAdjectives = Math.floor(Math.random() * 2) + 1
+      
+      const shuffled = [...availableAdjectives].sort(() => Math.random() - 0.5)
+      const selectedAdjectives = shuffled.slice(0, numberOfAdjectives)
+      const adjectivesParam = selectedAdjectives.join(',')
+      
       await File.create({
-        url: `https://picsum.photos/seed/animal-${animal.id}/300/200`,
+        url: `https://cataas.com/cat/${adjectivesParam}?width=400&height=400&type=square`,
         type: 'MEDIA',
         animalId: animal.id,
         ongId: animal.ongId,
