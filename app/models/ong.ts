@@ -1,12 +1,14 @@
 import { DateTime } from 'luxon'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
-import { column, hasMany } from '@adonisjs/lucid/orm'
-import type { HasMany } from '@adonisjs/lucid/types/relations'
+import { column, hasMany, manyToMany } from '@adonisjs/lucid/orm'
+import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import UUIDBaseModel from './uuid.js'
 import Animal from './animal.js'
 import File from './file.js'
+import User from './user.js'
+import Adoption from './adoption.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -61,15 +63,18 @@ export default class Ong extends compose(UUIDBaseModel, AuthFinder) {
   
   @column()
   declare responsavelTecnico: string | null
+
+  @column({ serializeAs: null })
+  declare password: string
   
   @hasMany(() => File)
   declare fotos: HasMany<typeof File>
 
-  @column({ serializeAs: null })
-  declare password: string
-
   @hasMany(() => Animal)
   declare animals: HasMany<typeof Animal>
+
+  @hasMany(() => Adoption)
+  declare adoptions: HasMany<typeof Adoption>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

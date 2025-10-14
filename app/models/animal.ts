@@ -1,9 +1,11 @@
 import { DateTime } from 'luxon'
-import { belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
+import { belongsTo, column, hasMany, manyToMany } from '@adonisjs/lucid/orm'
 import File from '#models/file'
-import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import UUIDBaseModel from './uuid.js'
 import Ong from './ong.js'
+import User from './user.js'
+import Adoption from './adoption.js'
 
 type AnimalSexo = 'M' | 'F'
 type AnimalPorte = 'Pequeno' | 'Medio' | 'Grande'
@@ -14,7 +16,7 @@ export default class Animal extends UUIDBaseModel {
   declare nome: string
   
   @column()
-  declare idade: number
+  declare idade: string
   
   @column()
   declare sexo: AnimalSexo
@@ -63,6 +65,19 @@ export default class Animal extends UUIDBaseModel {
 
   @hasMany(() => File)
   declare fotos: HasMany<typeof File>
+
+  @hasMany(() => Adoption)
+  declare adoptions: HasMany<typeof Adoption>
+
+  @manyToMany(() => User, {
+    pivotTable: 'likes',
+    localKey: 'id',
+    relatedKey: 'id',
+    pivotForeignKey: 'animal_id',
+    pivotRelatedForeignKey: 'user_id',
+    pivotColumns: ['created_at'],
+  })
+  declare favoriteAnimals: ManyToMany<typeof User>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

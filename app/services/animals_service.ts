@@ -2,6 +2,8 @@ import Animal from "#models/animal";
 import Ong from "#models/ong";
 import { DateTime } from "luxon";
 import ImageUpload from "../helper/image_upload.js";
+import User from "#models/user";
+import CacheManager from "../helper/cache_manager.js";
 
 export default class AnimalsService {
     static async create(data: any, ong: Ong) {
@@ -57,7 +59,15 @@ export default class AnimalsService {
         return animal
     }
 
-    static async list(pagination: { page: number, limit: number }) {
+    static async list(pagination: { page: number, limit: number }, currentUser?: any) {
+        console.log(currentUser)
+        const cacheKey = `animals:page=${pagination.page}:limit=${pagination.limit}:user=${currentUser?.uuid}`
+        const cache = await CacheManager.get(cacheKey)
+
+        if (cache){
+            return cache
+        }
+        
         const animals = await Animal.query().select([
             'id', 'uuid', 'nome', 'idade', 'sexo', 'raca', 'ong_id'
         ])
@@ -66,10 +76,11 @@ export default class AnimalsService {
                 query.whereNull('deleted_at').select('id', 'url')
             })
             .preload('ong', (query) => {
-                query.select('id', 'nome', 'email', 'telefone','endereco')
+                query.select('id', 'nome', 'email', 'telefone','bairro','cidade','estado')
             })
             .paginate(pagination.page, pagination.limit)
 
+        await CacheManager.create(cacheKey, JSON.stringify(animals),3600)
         return animals
     }
 
@@ -95,5 +106,48 @@ export default class AnimalsService {
 
         return animal
     }
+
+    static async fetchFavorites(user: User, pagination: { page: number, limit: number }) {
+        const cacheKey = `user:${user.id}:likedAnimals`
+        const cache = await CacheManager.get(cacheKey)
+
+        if (cache){
+            return cache
+        }
+
+        const likedAnimals = await user
+            .related('favoriteAnimals')
+            .query()
+            .preload('fotos',
+                (q) => {
+                    q.whereNull('deleted_at').select('url')
+                }
+            )
+            .preload('ong',
+                (q) => {
+                    q.select('id', 'nome', 'email', 'telefone','bairro')
+                }
+            ).paginate(pagination.page, pagination.limit)
+
+        await CacheManager.create(cacheKey, JSON.stringify(likedAnimals))
+        return likedAnimals
+    }
+
+    static async fetchLike(animalId: string, userId: number) {
+        const user = await User.findOrFail(userId)
+        const animal = await Animal.findByOrFail('uuid', animalId)
+        
+        const pivotRow = await user
+        .related('favoriteAnimals')
+        .pivotQuery()
+        .where('animal_id', animal.id)
+        .first()
+
+        if (!pivotRow) {
+            throw new Error('Like not found')
+        }
+
+        return pivotRow
+    }        
 
 }

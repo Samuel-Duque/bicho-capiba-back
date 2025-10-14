@@ -10,5 +10,6 @@ export default function animalsRoutes() {
         router.get('/:id', [AnimalsController, 'show'])
         router.put('/:id', [AnimalsController, 'update']).use(middleware.jwt())
         router.delete('/:id', [AnimalsController, 'destroy']).use(middleware.jwt())
+        
     }).prefix('/animals')
 }

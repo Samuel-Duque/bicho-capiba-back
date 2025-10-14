@@ -1,10 +1,13 @@
 import { DateTime } from 'luxon'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
-import { column } from '@adonisjs/lucid/orm'
+import { column, hasMany, manyToMany } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 import UUIDBaseModel from './uuid.js'
+import Animal from './animal.js'
+import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
+import Adoption from './adoption.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -102,6 +105,19 @@ export default class User extends compose(UUIDBaseModel, AuthFinder) {
   @column({ serializeAs: null })
   declare password: string
 
+  @hasMany(() => Adoption)
+  declare adoptions: HasMany<typeof Adoption>
+
+  @manyToMany(() => Animal, {
+    pivotTable: 'likes',
+    localKey: 'id',
+    relatedKey: 'id',
+    pivotForeignKey: 'user_id',
+    pivotRelatedForeignKey: 'animal_id',
+    pivotColumns: ['created_at'],
+  })
+  declare favoriteAnimals: ManyToMany<typeof Animal>
+  
   @column({ serialize: (superUser) => superUser === 1 })
   declare superUser: number;
 

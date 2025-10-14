@@ -1,0 +1,19 @@
+meta {
+  name: Check Animal Like
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{BASE_URL}}/animals/:animalId/liked
+  body: none
+  auth: inherit
+}
+
+params:path {
+  animalId: 1c322cd5-4a0c-44db-ad19-e128c47692be
+}
+
+settings {
+  encodeUrl: true
+}

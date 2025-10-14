@@ -8,7 +8,7 @@ export default class extends BaseSchema {
       table.increments('id').notNullable()
       table.string('uuid').notNullable().unique()
       table.string('nome').notNullable()
-      table.integer('idade').notNullable()
+      table.string('idade').notNullable()
       table.enum('sexo', ['M', 'F']).notNullable()
       table.enum('porte', ['Pequeno', 'Medio', 'Grande']).notNullable()
       table.string('cor').notNullable()
@@ -27,6 +27,12 @@ export default class extends BaseSchema {
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').notNullable()
       table.timestamp('deleted_at').nullable()
+      
+      table.index(['nome'])
+      table.index(['especie'])
+      table.index(['raca'])
+      table.index(['status_animal'])
+      table.index(['ong_id'])
     })
   }
 

@@ -12,7 +12,6 @@ export default class extends BaseSchema {
       table.string('email').notNullable()
       table.string('telefone').notNullable()
       table.string('descricao').nullable()
-      table.string('endereco').nullable()
       table.string('CEP').nullable()
       table.integer('quantidade_animais').nullable()
       table.string('responsavel_tecnico').nullable()
@@ -29,6 +28,10 @@ export default class extends BaseSchema {
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').notNullable()
       table.timestamp('deleted_at').nullable()
+
+      table.index(['nome'])
+      table.index(['email'])
+      table.index(['cnpj'])
     })
   }
 

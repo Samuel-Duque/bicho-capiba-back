@@ -1,0 +1,23 @@
+meta {
+  name: Unlike an Animal
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{BASE_URL}}/animals/:animalId/like
+  body: none
+  auth: inherit
+}
+
+params:query {
+  : 
+}
+
+params:path {
+  animalId: 1c322cd5-4a0c-44db-ad19-e128c47692be
+}
+
+settings {
+  encodeUrl: true
+}
