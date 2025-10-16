@@ -2,8 +2,8 @@ import User from '#models/user';
 import JwtService from '#services/jwt_service';
 import type { HttpContext } from '@adonisjs/core/http';
 import { registerUserValidator } from '#validators/register_user';
-import brazilFinder from '../helper/brazil_finder.js';
-import CacheManager from '../helper/cache_manager.js';
+import brazilFinder from '../helpers/brazil_finder.js';
+import CacheManager from '../helpers/cache_manager.js';
 import Ong from '#models/ong';
 export default class AuthController {
   async register({ request, response }: HttpContext) {

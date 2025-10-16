@@ -1,7 +1,7 @@
 import OngsService from '#services/ongs_service';
 import { registerOngValidator } from '#validators/register_ong';
 import type { HttpContext } from '@adonisjs/core/http';
-import { responseWithPagination, responseWithSuccess } from '../helper/api_response.js';
+import { responseWithPagination, responseWithSuccess } from '../helpers/api_response.js';
 
 export default class OngsController {
   async index({ request, response }: HttpContext) {

@@ -1,9 +1,9 @@
 import type { HttpContext } from '@adonisjs/core/http';
-import { responseWithPagination, responseWithSuccess } from '../helper/api_response.js';
+import { responseWithPagination, responseWithSuccess } from '../helpers/api_response.js';
 import AnimalsService from '#services/animals_service';
 import { RegisterAnimalValidator } from '#validators/register_animal';
 import Ong from '#models/ong';
-import AppError from '../helper/app_error.js';
+import AppError from '../helpers/app_error.js';
 import { UpdateAnimalValidator } from '#validators/update_animal';
 import User from '#models/user';
 import Animal from '#models/animal';

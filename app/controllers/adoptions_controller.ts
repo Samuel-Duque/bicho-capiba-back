@@ -1,6 +1,6 @@
 import Ong from '#models/ong';
 import type { HttpContext } from '@adonisjs/core/http';
-import { responseWithPagination, responseWithSuccess } from '../helper/api_response.js';
+import { responseWithPagination, responseWithSuccess } from '../helpers/api_response.js';
 import User from '#models/user';
 import AdoptionsService from '#services/adoptions_service';
 import { updateAdoptionValidator } from '#validators/update_adoption';
@@ -11,7 +11,6 @@ export default class AdoptionsController {
     const page = request.input('page', 1);
     const limit = request.input('limit', 10);
 
-    console.log(user as User);
     if (user as Ong) {
       const ong = user as Ong;
       const adoptions = await AdoptionsService.listByOng(ong, { page, limit });

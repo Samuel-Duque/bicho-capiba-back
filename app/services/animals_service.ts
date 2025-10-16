@@ -1,9 +1,9 @@
 import Animal from '#models/animal';
 import Ong from '#models/ong';
 import { DateTime } from 'luxon';
-import ImageUpload from '../helper/image_upload.js';
+import ImageUpload from '../helpers/image_upload.js';
 import User from '#models/user';
-import CacheManager from '../helper/cache_manager.js';
+import CacheManager from '../helpers/cache_manager.js';
 
 export default class AnimalsService {
   static async create(data: any, ong: Ong) {
@@ -63,14 +63,7 @@ export default class AnimalsService {
   }
 
   static async list(pagination: { page: number; limit: number }, currentUser?: any) {
-    console.log(currentUser);
-    // const cacheKey = `animals:page=${pagination.page}:limit=${pagination.limit}:user=${currentUser?.uuid}`;
-    // const cache = await CacheManager.get(cacheKey);
-
-    // if (cache) {
-    //   return cache;
-    // }
-
+    console.time('fetchAnimals');
     const query = Animal.query()
       .select(['id', 'uuid', 'nome', 'idade', 'sexo', 'raca', 'ong_id'])
       .whereNull('deleted_at')
@@ -86,8 +79,9 @@ export default class AnimalsService {
       });
     }
 
-    // await CacheManager.create(cacheKey, JSON.stringify(animals), 3600);
-    return await query.paginate(pagination.page, pagination.limit);
+    const result = await query.paginate(pagination.page, pagination.limit);
+    console.timeEnd('fetchAnimals');
+    return result;
   }
 
   static async edit(animalId: string, data: any) {
