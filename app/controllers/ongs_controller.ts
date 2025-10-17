@@ -26,14 +26,10 @@ export default class OngsController {
     }
   }
   async store({ request, response }: HttpContext) {
-    try {
-      const data = await request.validateUsing(registerOngValidator);
-      const ong = await OngsService.create(data);
+    const data = await request.validateUsing(registerOngValidator);
+    const ong = await OngsService.create(data);
 
-      return responseWithSuccess(response, ong);
-    } catch (error) {
-      return response.status(error.status).json(error.message);
-    }
+    return responseWithSuccess(response, ong);
   }
   async update({ response }: HttpContext) {
     try {

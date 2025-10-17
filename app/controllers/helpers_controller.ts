@@ -1,6 +1,6 @@
 import { HttpContext } from '@adonisjs/core/http';
 import brazilFinder from '../helpers/brazil_finder.js';
-import { responseWithSuccess } from '../helpers/api_response.js';
+import { responseWithError, responseWithSuccess } from '../helpers/api_response.js';
 import AppError from '../helpers/app_error.js';
 
 export default class HelpersController {
@@ -29,16 +29,17 @@ export default class HelpersController {
       const cnpjClean = cnpj.replace(/\D/g, '');
 
       if (!cnpjClean || cnpjClean.length !== 14) {
-        throw AppError.E_BAD_REQUEST('CNPJ inválido. Deve conter 14 dígitos numéricos.');
+        throw AppError.E_BAD_REQUEST();
       }
 
       const data = await brazilFinder.cnpjFinder(cnpjClean);
       return responseWithSuccess(response, data);
     } catch (error) {
-      if (error instanceof AppError) {
-        throw error;
-      }
-      throw AppError.E_NOT_FOUND('Erro ao buscar CNPJ. Verifique se o CNPJ é válido.');
+      return responseWithError(
+        response,
+        'Erro ao buscar CNPJ. Verifique se o CNPJ é válido.',
+        error.status
+      );
     }
   }
 }

@@ -1,8 +1,4 @@
-export function responseWithPagination(
-  response: any,
-  content: any,
-  extras: any = {}
-) {
+export function responseWithPagination(response: any, content: any, extras: any = {}) {
   const result = content.toJSON ? content.toJSON() : content;
 
   return response.json({
@@ -19,11 +15,7 @@ export function responseWithPagination(
   });
 }
 
-export function responseWithSuccess(
-  response: any,
-  data?: any,
-  extras?: any
-) {
+export function responseWithSuccess(response: any, data?: any, extras?: any) {
   if (typeof data === 'string') {
     data = { message: data };
   }
@@ -36,5 +28,18 @@ export function responseWithSuccess(
   });
 }
 
-
-
+export function responseWithError(
+  response: any,
+  message: string,
+  status = 400,
+  extras: any = {}
+) {
+  return response.status(status).json({
+    status: status,
+    result: null,
+    ...extras,
+    error: {
+      message,
+    },
+  });
+}

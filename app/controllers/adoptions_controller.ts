@@ -24,8 +24,6 @@ export default class AdoptionsController {
     }
   }
 
-  async store({ request }: HttpContext) {}
-
   async show({ params }: HttpContext) {}
 
   async update({ params, request, response }: HttpContext) {

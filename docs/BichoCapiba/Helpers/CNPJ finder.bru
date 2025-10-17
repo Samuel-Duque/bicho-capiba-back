@@ -1,0 +1,19 @@
+meta {
+  name: CNPJ finder
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{BASE_URL}}/helpers/cnpj/:cnpj
+  body: none
+  auth: inherit
+}
+
+params:path {
+  cnpj: 1
+}
+
+settings {
+  encodeUrl: true
+}

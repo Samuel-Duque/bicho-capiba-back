@@ -28,7 +28,6 @@ router
     animalsRoutes(); // Add jwt auth after finishing development.
     adoptionRoutes();
     helperRoutes();
-
     likeRoutes();
   })
   .prefix('/api');
