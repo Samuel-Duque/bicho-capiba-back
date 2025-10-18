@@ -1,25 +1,24 @@
 export default class AppError extends Error {
-    static BAD_REQUEST = 400;
-    static VALIDATION_FAIL = 400;
-    static UNAUTHORIZED = 401;
-    static FORBIDDEN = 403;
-    static NOT_FOUND = 404;
-    static UNPROCESSABLE_ENTITY = 422;
-    static GENERIC_ERROR = 500;
+  static BAD_REQUEST = 400;
+  static VALIDATION_FAIL = 400;
+  static UNAUTHORIZED = 401;
+  static FORBIDDEN = 403;
+  static NOT_FOUND = 404;
+  static UNPROCESSABLE_ENTITY = 422;
+  static GENERIC_ERROR = 500;
 
-    status: number;
+  status: number;
 
-    constructor(status = 500, ...params: any[]) {
-        super(...params);
+  constructor(status = 500, ...params: string[]) {
+    super(...params);
 
-
-        if(Error.captureStackTrace) {
-            Error.captureStackTrace(this, AppError);
-        }
-
-        this.status = status;
-        this.name = 'AppError';
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, AppError);
     }
+
+    this.status = status;
+    this.name = params[0] || 'Error';
+  }
 
   static E_INVALID_CREDENTIALS() {
     return new this(this.UNAUTHORIZED, 'INVALID_CREDENTIALS');

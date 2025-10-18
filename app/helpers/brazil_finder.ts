@@ -1,4 +1,5 @@
 import axios from 'axios';
+import AppError from './app_error.js';
 
 export default class brazilFinder {
   static async cepFinder(cep: string) {
@@ -18,8 +19,7 @@ export default class brazilFinder {
 
   static async cnpjFinder(cnpj: string) {
     try {
-      cnpj = cnpj.replace(/\D/g, '');
-
+      console.log('CNPJ:', cnpj);
       const { data } = await axios.get(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`, {
         timeout: 10000,
       });
@@ -30,7 +30,7 @@ export default class brazilFinder {
 
       return true;
     } catch (error) {
-      throw new Error('CNPJ not found');
+      throw AppError.E_UNPROCESSABLE_ENTITY('Invalid CNPJ');
     }
   }
 }

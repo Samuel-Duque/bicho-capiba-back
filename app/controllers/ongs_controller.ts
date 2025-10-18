@@ -1,7 +1,11 @@
 import OngsService from '#services/ongs_service';
 import { registerOngValidator } from '#validators/register_ong';
 import type { HttpContext } from '@adonisjs/core/http';
-import { responseWithPagination, responseWithSuccess } from '../helpers/api_response.js';
+import {
+  responseWithError,
+  responseWithPagination,
+  responseWithSuccess,
+} from '../helpers/api_response.js';
 
 export default class OngsController {
   async index({ request, response }: HttpContext) {
@@ -26,10 +30,14 @@ export default class OngsController {
     }
   }
   async store({ request, response }: HttpContext) {
-    const data = await request.validateUsing(registerOngValidator);
-    const ong = await OngsService.create(data);
+    try {
+      const data = await request.validateUsing(registerOngValidator);
+      const ong = await OngsService.create(data);
 
-    return responseWithSuccess(response, ong);
+      return responseWithSuccess(response, ong);
+    } catch (error) {
+      return responseWithError(response, error);
+    }
   }
   async update({ response }: HttpContext) {
     try {

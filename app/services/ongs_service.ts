@@ -8,14 +8,14 @@ import brazilFinder from '../helpers/brazil_finder.js';
 export default class OngsService {
   static async create(data: any) {
     const existingOng = await Ong.query().where('cnpj', data.cnpj).first();
-
+    console.log(existingOng);
     if (existingOng) {
       throw AppError.E_UNPROCESSABLE_ENTITY('CNPJ already registered');
     }
 
-    console.log(data.cnpj);
+    console.log(data);
     const isValidCnpj = await brazilFinder.cnpjFinder(data.cnpj);
-
+    console.log(isValidCnpj);
     if (!isValidCnpj) {
       throw AppError.E_UNPROCESSABLE_ENTITY('Invalid CNPJ');
     }
@@ -35,8 +35,8 @@ export default class OngsService {
     ong.descricao = data.descricao || null;
     ong.latitude = data.latitude || null;
     ong.longitude = data.longitude || null;
-    ong.responsavelTecnico = data.responsavel_tecnico || null;
-    ong.quantidadeAnimais = data.quantidade_animais || 0;
+    ong.responsavelTecnico = data.responsavelTecnico || null;
+    ong.quantidadeAnimais = data.quantidadeAnimais || 0;
     ong.telefone = data.telefone;
     console.log(data);
 
