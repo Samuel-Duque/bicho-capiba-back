@@ -24,7 +24,7 @@ export default class AdoptionsController {
     }
   }
 
-  async show({ params }: HttpContext) {}
+  // async show({ params }: HttpContext) {}
 
   async update({ params, request, response }: HttpContext) {
     try {
@@ -40,5 +40,5 @@ export default class AdoptionsController {
     }
   }
 
-  async destroy({ params }: HttpContext) {}
+  // async destroy({ params }: HttpContext) {}
 }
