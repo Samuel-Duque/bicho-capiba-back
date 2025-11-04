@@ -4,6 +4,7 @@ export default class AppError extends Error {
   static UNAUTHORIZED = 401;
   static FORBIDDEN = 403;
   static NOT_FOUND = 404;
+  static CONFLICT = 409;
   static UNPROCESSABLE_ENTITY = 422;
   static GENERIC_ERROR = 500;
 
@@ -32,6 +33,9 @@ export default class AppError extends Error {
     return new this(this.VALIDATION_FAIL, message || 'VALIDATION_FAIL');
   }
 
+  static E_CONFLICT(message?: string) {
+    return new this(this.CONFLICT, message || 'CONFLICT');
+  }
   static E_UNAUTHORIZED(message?: string) {
     return new this(this.UNAUTHORIZED, message || 'UNAUTHORIZED');
   }

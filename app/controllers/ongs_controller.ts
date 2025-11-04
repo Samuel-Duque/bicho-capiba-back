@@ -6,6 +6,9 @@ import {
   responseWithPagination,
   responseWithSuccess,
 } from '../helpers/api_response.js';
+import { updateOngValidator } from '#validators/update_ong';
+import Ong from '#models/ong';
+// AppError not used here
 
 export default class OngsController {
   async index({ request, response }: HttpContext) {
@@ -39,10 +42,19 @@ export default class OngsController {
       return responseWithError(response, error);
     }
   }
-  async update({ response }: HttpContext) {
+  async update({ response, request, currentUser }: HttpContext) {
     try {
+      console.log(';;', currentUser);
+      const user = currentUser as Ong;
+      const data = await request.validateUsing(updateOngValidator);
+      console.log(data);
+      console.log(user);
+      const ong = await OngsService.edit(user, data);
+
+      return responseWithSuccess(response, ong);
     } catch (error) {
-      return response.status(error.status).json(error.message);
+      console.log(error);
+      return responseWithError(response, error);
     }
   }
   async delete({ response, params }: HttpContext) {

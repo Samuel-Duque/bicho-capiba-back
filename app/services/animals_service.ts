@@ -4,7 +4,9 @@ import { DateTime } from 'luxon';
 import ImageUpload from '../helpers/image_upload.js';
 import User from '#models/user';
 import CacheManager from '../helpers/cache_manager.js';
-
+import Especie from '#models/especie';
+import Cor from '#models/cor';
+import Vacina from '#models/vacina';
 export default class AnimalsService {
   static async create(data: any, ong: Ong) {
     const ongId = ong.id;
@@ -26,6 +28,7 @@ export default class AnimalsService {
     animal.sociavelPessoa = data.sociavel_pessoa || null;
     animal.ongId = ongId;
     console.log(data);
+
     if (data.images) {
       console.log('has images');
 
@@ -51,6 +54,10 @@ export default class AnimalsService {
   static async getAnimal(animalId: string) {
     const animal = await Animal.query()
       .where('uuid', animalId)
+      .preload('cor')
+      .preload('raca')
+      .preload('especie')
+      .preload('vacinas')
       .preload('fotos', (query) => {
         query.whereNull('deleted_at').select('id', 'url');
       })
@@ -65,10 +72,25 @@ export default class AnimalsService {
   static async list(pagination: { page: number; limit: number }, currentUser?: any) {
     console.time('fetchAnimals');
     const query = Animal.query()
-      .select(['id', 'uuid', 'nome', 'idade', 'sexo', 'raca', 'ong_id'])
+      .select([
+        'id',
+        'uuid',
+        'nome',
+        'idade',
+        'sexo',
+        'ong_id',
+        'raca_id',
+        'especie_id',
+        'cor_id',
+        'porte',
+        'status_animal',
+      ])
       .whereNull('deleted_at')
       .preload('fotos', (query) => {
         query.whereNull('deleted_at').select('id', 'url');
+      })
+      .preload('raca', (query) => {
+        query.select('nome');
       })
       .preload('ong', (query) => {
         query.select('id', 'nome', 'email', 'telefone', 'bairro', 'cidade', 'estado');
@@ -78,6 +100,8 @@ export default class AnimalsService {
         q.where('user_id', currentUser.id);
       });
     }
+
+    console.log(query.toQuery());
 
     const result = await query.paginate(pagination.page, pagination.limit);
     console.timeEnd('fetchAnimals');
@@ -145,5 +169,18 @@ export default class AnimalsService {
     }
 
     return pivotRow;
+  }
+
+  static async getFiltersData() {
+    const especies = await Especie.query().preload('racas');
+    console.log(especies);
+    const cores = await Cor.query().select('nome', 'hexadecimal');
+    const vacinas = await Vacina.query().select('nome');
+
+    return {
+      especies,
+      cores,
+      vacinas,
+    };
   }
 }

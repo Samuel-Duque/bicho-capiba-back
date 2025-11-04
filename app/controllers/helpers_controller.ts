@@ -34,12 +34,11 @@ export default class HelpersController {
 
       const data = await brazilFinder.cnpjFinder(cnpjClean);
       return responseWithSuccess(response, data);
-    } catch (error) {
-      return responseWithError(
-        response,
-        'Erro ao buscar CNPJ. Verifique se o CNPJ é válido.',
-        error.status
-      );
+    } catch (error: any) {
+      return responseWithError(response, {
+        status: error?.status || 404,
+        message: 'Erro ao buscar CNPJ. Verifique se o CNPJ é válido.',
+      });
     }
   }
 }

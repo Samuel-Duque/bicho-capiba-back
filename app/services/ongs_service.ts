@@ -10,7 +10,7 @@ export default class OngsService {
     const existingOng = await Ong.query().where('cnpj', data.cnpj).first();
     console.log(existingOng);
     if (existingOng) {
-      throw AppError.E_UNPROCESSABLE_ENTITY('CNPJ already registered');
+      throw AppError.E_CONFLICT('CNPJ already registered');
     }
 
     console.log(data);
@@ -24,7 +24,7 @@ export default class OngsService {
     ong.nome = data.name;
     ong.email = data.email;
     ong.password = data.password;
-    ong.CEP = data.cep;
+    ong.cep = data.cep;
     ong.cnpj = data.cnpj;
     ong.rua = data.rua;
     ong.bairro = data.bairro;
@@ -38,12 +38,10 @@ export default class OngsService {
     ong.responsavelTecnico = data.responsavelTecnico || null;
     ong.quantidadeAnimais = data.quantidadeAnimais || 0;
     ong.telefone = data.telefone;
-    console.log(data);
 
     if (data.images) {
       const imagePath = await ImageUpload.upload(data.images, 'ongs');
-      console.log(imagePath);
-      await ong.related('fotos').create({ url: imagePath });
+      await ong.related('images').create({ url: imagePath });
     }
 
     await ong.save();
@@ -60,12 +58,12 @@ export default class OngsService {
 
     const ong = await Ong.query()
       .where('uuid', OngId)
-      .preload('fotos', (query) => {
+      .preload('images', (query) => {
         query.whereNull('deleted_at').select('id', 'url');
       })
       .preload('animals')
       .firstOrFail();
-    await CacheManager.create(cacheKey, JSON.stringify(ong));
+    // await CacheManager.create(cacheKey, JSON.stringify(ong));
 
     return ong;
   }
@@ -73,7 +71,7 @@ export default class OngsService {
   static async list(pagination: { page: number; limit: number }) {
     const ongs = await Ong.query()
       .whereNull('deleted_at')
-      .preload('fotos', (query) => {
+      .preload('images', (query) => {
         query.whereNull('deleted_at').select('id', 'url');
       })
       .preload('animals', (query) => {
@@ -84,17 +82,24 @@ export default class OngsService {
     return ongs;
   }
 
-  static async edit(OngId: string, data: any) {
-    const ong = await Ong.findByOrFail('uuid', OngId);
-    ong.merge(data);
+  static async edit(Ong: Ong, data: any) {
+    const cacheKey = `user:${Ong.uuid}`;
+    await CacheManager.delete(cacheKey);
 
-    if (data.image) {
-      const imagePath = await ImageUpload.upload(data.image);
-      await ong.related('fotos').create({ url: imagePath });
+    if (data.images) {
+      const imagePath = await ImageUpload.upload(data.images, 'ongs');
+      await Ong.load('images');
+
+      if (Ong.images.length > 0) await ImageUpload.delete(Ong.images[0].url);
+
+      await Ong.related('images').create({ url: imagePath });
     }
 
-    await ong.save();
-    return ong;
+    const { images, ...ong } = data;
+    Ong.merge(ong);
+
+    await Ong.save();
+    return Ong;
   }
 
   static async delete(OngId: string) {

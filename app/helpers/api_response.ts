@@ -28,18 +28,16 @@ export function responseWithSuccess(response: any, data?: any, extras?: any) {
   });
 }
 
-export function responseWithError(
-  response: any,
-  message: string,
-  status = 400,
-  extras: any = {}
-) {
-  return response.status(status).json({
-    status: status,
-    result: null,
-    ...extras,
+export function responseWithError(response: any, message: any, ...extras: any) {
+  console.log(message);
+
+  return response.status(message.status).json({
+    status: message.status,
     error: {
-      message,
+      message: message.message,
+      code: message.code,
+
+      ...extras,
     },
   });
 }

@@ -55,7 +55,8 @@ export default class Ong extends compose(UUIDBaseModel, AuthFinder) {
   declare longitude: string | null;
 
   @column()
-  declare CEP: string | null;
+  @column({ columnName: 'CEP' })
+  declare cep: string | null;
 
   @column()
   declare quantidadeAnimais: number | null;
@@ -67,7 +68,7 @@ export default class Ong extends compose(UUIDBaseModel, AuthFinder) {
   declare password: string;
 
   @hasMany(() => File)
-  declare fotos: HasMany<typeof File>;
+  declare images: HasMany<typeof File>;
 
   @hasMany(() => Animal)
   declare animals: HasMany<typeof Animal>;

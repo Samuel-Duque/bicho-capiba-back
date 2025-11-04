@@ -149,4 +149,17 @@ export default class AnimalsController {
       });
     }
   }
+
+  async getFiltersData({ response }: HttpContext) {
+    try {
+      const data = await AnimalsService.getFiltersData();
+
+      return responseWithSuccess(response, data);
+    } catch (error) {
+      return response.status(400).json({
+        message: 'Erro ao buscar dados para filtros',
+        error: error.message,
+      });
+    }
+  }
 }

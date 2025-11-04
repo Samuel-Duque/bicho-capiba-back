@@ -7,6 +7,7 @@ export default function animalsRoutes() {
   router
     .group(() => {
       router.get('/', [AnimalsController, 'index']).use(middleware.optionalAuth());
+      router.get('/filters', [AnimalsController, 'getFiltersData']);
       router.post('/', [AnimalsController, 'store']).use(middleware.jwt());
       router.get('/:id', [AnimalsController, 'show']);
       router.put('/:id', [AnimalsController, 'update']).use(middleware.jwt());
