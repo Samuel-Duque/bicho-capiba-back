@@ -54,10 +54,9 @@ export default class AnimalsService {
   static async getAnimal(animalId: string) {
     const animal = await Animal.query()
       .where('uuid', animalId)
-      // .preload('cor')
-      // .preload('raca')
-      // .preload('especie')
-      // .preload('vacinas')
+      .preload('cor')
+      .preload('raca')
+      .preload('especie')
       .preload('fotos', (query) => {
         query.whereNull('deleted_at').select('id', 'url');
       })

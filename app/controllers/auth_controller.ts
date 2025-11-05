@@ -2,22 +2,21 @@ import User from '#models/user';
 import JwtService from '#services/jwt_service';
 import type { HttpContext } from '@adonisjs/core/http';
 import { registerUserValidator } from '#validators/register_user';
-import brazilFinder from '../helpers/brazil_finder.js';
 import CacheManager from '../helpers/cache_manager.js';
 import Ong from '#models/ong';
 export default class AuthController {
   async register({ request, response }: HttpContext) {
     try {
-      const { fullName, email, password, cep } =
+      const { fullName, email, password } =
         await request.validateUsing(registerUserValidator);
       const user = new User();
       user.fullName = fullName;
       user.email = email;
       user.password = password;
 
-      const { street, cep: CEP } = await brazilFinder.cepFinder(cep);
-      user.endereco = street;
-      user.CEP = CEP;
+      // const { street, cep: CEP } = await brazilFinder.cepFinder(cep);
+      // user.endereco = street;
+      // user.CEP = CEP;
 
       await user.save();
 
@@ -69,10 +68,10 @@ export default class AuthController {
       console.log('USANDO CACHE');
       return response.status(200).json(cachedUser);
     }
-    const ong = currentUser as Ong;
-    await ong.load('images');
-    console.log(ong);
+
     if (currentUser instanceof Ong) {
+      await currentUser.load('images');
+      const ong = currentUser.toJSON();
       const ongData = JSON.stringify(ong);
       await CacheManager.create(cacheKey, ongData, 3600);
       return response.status(200).json(ongData);
