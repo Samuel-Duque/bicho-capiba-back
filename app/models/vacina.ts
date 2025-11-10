@@ -1,8 +1,10 @@
-import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm';
-import type { BelongsTo } from '@adonisjs/lucid/types/relations';
+import { belongsTo, column, manyToMany } from '@adonisjs/lucid/orm';
+import type { BelongsTo, ManyToMany } from '@adonisjs/lucid/types/relations';
 import Especie from './especie.js';
+import Animal from './animal.js';
+import UUIDBaseModel from './uuid.js';
 
-export default class Vacina extends BaseModel {
+export default class Vacina extends UUIDBaseModel {
   @column({ isPrimary: true, serializeAs: null })
   declare id: number;
 
@@ -17,4 +19,7 @@ export default class Vacina extends BaseModel {
 
   @belongsTo(() => Especie)
   declare especie: BelongsTo<typeof Especie>;
+
+  @manyToMany(() => Animal)
+  declare animais: ManyToMany<typeof Animal>;
 }

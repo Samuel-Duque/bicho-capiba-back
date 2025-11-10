@@ -1,33 +1,33 @@
-import User from "#models/user";
+import User from '#models/user';
 
 export default class UsersService {
-    static async create(data: any) {
-        return data;
-    }
+  static async create(data: any) {
+    return data;
+  }
 
-    static async list(){
-        const users = await User.all()
-        return users
-    }
+  static async list() {
+    const users = await User.all();
+    return users;
+  }
 
-    static async getUser(UserId: string){
-        const user = await User.findByOrFail('uuid', UserId)
-        
-        return user
-    }
+  static async getUser(UserId: string) {
+    const user = await User.findByOrFail('uuid', UserId);
 
-    static async edit(UserId: string, data: any) {
-        const user = await User.findByOrFail('uuid', UserId)
-        user.merge(data)
-        await user.save()
+    return user;
+  }
 
-        return user
-    }
+  static async edit(UserId: string, data: any) {
+    const user = await User.findByOrFail('uuid', UserId);
+    user.merge(data);
+    await user.save();
 
-    static async delete(UserId: string) {
-        const user = await User.findByOrFail('uuid', UserId)
-        await user.delete()
+    return user;
+  }
 
-        return user
-    }
+  static async delete(UserId: string) {
+    const user = await User.findByOrFail('uuid', UserId);
+    await user.delete();
+
+    return user;
+  }
 }

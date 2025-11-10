@@ -9,13 +9,13 @@ import Ong from './ong.js';
 type AdoptionStatus = 'pendente' | 'aprovado' | 'rejeitado';
 
 export default class Adoption extends UUIDBaseModel {
-  @column()
+  @column({ serializeAs: null })
   declare animalId: number;
 
-  @column()
+  @column({ serializeAs: null })
   declare userId: number;
 
-  @column()
+  @column({ serializeAs: null })
   declare ongId: number;
 
   @column()

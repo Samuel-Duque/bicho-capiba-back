@@ -20,7 +20,9 @@ body:json {
     "especie": "Cachorro",
     "raca": "Vira-lata",
     "data_nascimento": "2022-05-14",
-    "vacinas": "V8, Antirrábica, Gripe Canina",
+    "vacinas": [
+      "cfe25bcc-1553-469a-84d3-46b749cb48e7"
+    ],
     "castrado": true,
     "necessidades_especiais": "Nenhuma",
     "historia": "Luna foi resgatada de uma situação de abandono e hoje é uma cachorrinha alegre e dócil. Adora brincar com outros cães e crianças.",
@@ -31,23 +33,25 @@ body:json {
 }
 
 body:multipart-form {
-  nome: Luna
+  nome: Kleber FILHO
   idade: 3
   sexo: F
   porte: Medio
-  cor: Branco e marrom
-  especie: Cachorro
-  raca: Vira-lata
+  cor: e4463865-90e1-4ac7-9431-3cc7d448874c
+  especie: be8a5fc6-a189-48c3-a722-a199b42a06d3
+  raca: 074ee5a7-8a8e-4df1-8475-068e965bc31c
   data_nascimento: 2022-05-14
-  vacinas: V8
+  vacinas[]: cfe25bcc-1553-469a-84d3-46b749cb48e7
   castrado: true
   necessidades_especiais: Nenhuma
   historia: Luna foi resgatada de uma situação de abandono e hoje é uma cachorrinha alegre e dócil. Adora brincar com outros cães e crianças.
   sociavel_animal: true
   sociavel_pessoa: false
-  ~images: @file()
+  images: @file(/home/samuca/Pictures/wallpapers/sunrise-horse-head-rock-bermagui-new-south-wales-australia-end-world-172241321.webp)
+  images: @file(/home/samuca/Pictures/wallpapers/Dynamic-Wallpapers/Dark/kitty_dark.png|/home/samuca/Pictures/wallpapers/Dynamic-Wallpapers/Dark/Tree_dark.png|/home/samuca/Pictures/wallpapers/Dynamic-Wallpapers/Dark/highway_dark.png|/home/samuca/Pictures/wallpapers/Dynamic-Wallpapers/Dark/Mountain_dark.png|/home/samuca/Pictures/wallpapers/Dynamic-Wallpapers/Dark/Forest-Dark.png)
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }

@@ -19,7 +19,6 @@ export default class brazilFinder {
 
   static async cnpjFinder(cnpj: string) {
     try {
-      console.log('CNPJ:', cnpj);
       const { data } = await axios.get(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`, {
         timeout: 10000,
       });

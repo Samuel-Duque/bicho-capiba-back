@@ -7,46 +7,47 @@ import CacheManager from '../helpers/cache_manager.js';
 import Especie from '#models/especie';
 import Cor from '#models/cor';
 import Vacina from '#models/vacina';
+import Raca from '#models/raca';
+
 export default class AnimalsService {
   static async create(data: any, ong: Ong) {
-    const ongId = ong.id;
     const animal = new Animal();
     animal.nome = data.nome;
-    animal.idade = data.idade;
     animal.sexo = data.sexo;
     animal.porte = data.porte;
-    animal.cor = data.cor;
-    animal.especie = data.especie;
-    animal.raca = data.raca;
-    animal.dataNascimento = data.data_nascimento || null;
-    animal.vacinas = data.vacinas || null;
+    animal.dataNascimento = data.data_nascimento;
     animal.castrado = data.castrado || null;
     animal.necessidadesEspeciais = data.necessidades_especiais || null;
     animal.historia = data.historia || null;
     animal.statusAnimal = 'Disponivel';
     animal.sociavelAnimal = data.sociavel_animal || null;
     animal.sociavelPessoa = data.sociavel_pessoa || null;
-    animal.ongId = ongId;
-    console.log(data);
 
-    if (data.images) {
-      console.log('has images');
-
-      console.log(data.images);
-
-      const imagePath = await ImageUpload.upload(data.images, 'animals');
-      await animal.related('fotos').create({ url: imagePath, extname: '' });
-
-      // Se quiser suportar múltiplas imagens no futuro
-
-      // for (const image of data.images) {
-      //     const imageName = await ImageUpload.upload(image, 'animals')
-      //     console.log(imageName)
-      //     await animal.related('fotos').create({ url: imageName })
-      // }
+    let vacinas = [];
+    const vacinasArray = data.vacinas;
+    for (const vacinaId of vacinasArray) {
+      const vacina = await Vacina.query().where('uuid', vacinaId).firstOrFail();
+      vacinas.push(vacina.id);
     }
 
+    if (data.images) {
+      for (const image of data.images) {
+        const imageName = await ImageUpload.upload(image, 'animals');
+        console.log(imageName);
+        await animal.related('fotos').create({ url: imageName });
+      }
+    }
+
+    const raca = await Raca.query().where('uuid', data.raca).firstOrFail();
+    const especie = await Especie.query().where('uuid', data.especie).firstOrFail();
+    const cor = await Cor.query().where('uuid', data.cor).firstOrFail();
+
     await animal.save();
+    await animal.related('cor').associate(cor);
+    await animal.related('especie').associate(especie);
+    await animal.related('raca').associate(raca);
+    await animal.related('vacinas').attach(vacinas);
+    await animal.related('ong').associate(ong);
 
     return animal;
   }
@@ -69,13 +70,12 @@ export default class AnimalsService {
   }
 
   static async list(pagination: { page: number; limit: number }, currentUser?: any) {
-    console.time('fetchAnimals');
     const query = Animal.query()
       .select([
         'id',
         'uuid',
         'nome',
-        'idade',
+        'data_nascimento',
         'sexo',
         'ong_id',
         'raca_id',
@@ -88,22 +88,19 @@ export default class AnimalsService {
       .preload('fotos', (query) => {
         query.whereNull('deleted_at').select('id', 'url');
       })
-      .preload('raca', (query) => {
-        query.select('nome');
-      })
+      .preload('raca')
+      .preload('especie')
       .preload('ong', (query) => {
         query.select('id', 'nome', 'email', 'telefone', 'bairro', 'cidade', 'estado');
       });
+
     if (currentUser) {
-      query.preload('favoriteAnimals', (q) => {
-        q.where('user_id', currentUser.id);
+      query.preload('likes', (likeQuery) => {
+        likeQuery.where('user_id', currentUser.id);
       });
     }
 
-    console.log(query.toQuery());
-
     const result = await query.paginate(pagination.page, pagination.limit);
-    console.timeEnd('fetchAnimals');
     return result;
   }
 
@@ -139,7 +136,7 @@ export default class AnimalsService {
     }
 
     const likedAnimals = await user
-      .related('favoriteAnimals')
+      .related('likes')
       .query()
       .preload('fotos', (q) => {
         q.whereNull('deleted_at').select('url');
@@ -158,7 +155,7 @@ export default class AnimalsService {
     const animal = await Animal.findByOrFail('uuid', animalId);
 
     const pivotRow = await user
-      .related('favoriteAnimals')
+      .related('likes')
       .pivotQuery()
       .where('animal_id', animal.id)
       .first();
@@ -170,11 +167,22 @@ export default class AnimalsService {
     return pivotRow;
   }
 
-  static async getFiltersData() {
+  static async getFiltersData(filter?: string | null) {
     const especies = await Especie.query().preload('racas');
-    console.log(especies);
     const cores = await Cor.query().select('nome', 'hexadecimal');
     const vacinas = await Vacina.query().select('nome');
+
+    if (filter === 'especies') {
+      return { especies };
+    }
+
+    if (filter === 'cores') {
+      return { cores };
+    }
+
+    if (filter === 'vacinas') {
+      return { vacinas };
+    }
 
     return {
       especies,

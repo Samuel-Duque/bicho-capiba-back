@@ -8,26 +8,22 @@ export default class extends BaseSchema {
       table.increments('id').notNullable();
       table.string('uuid').notNullable().unique();
       table.string('nome').notNullable();
-      table.string('idade').notNullable();
       table.enum('sexo', ['M', 'F']).notNullable();
       table.enum('porte', ['Pequeno', 'Medio', 'Grande']).notNullable();
-      table.integer('cor_id').notNullable();
-      table.integer('especie_id').notNullable();
-      table.integer('raca_id').notNullable();
-      table.string('data_nascimento').nullable();
+      table.integer('cor_id').notNullable().defaultTo(1);
+      table.integer('especie_id').notNullable().defaultTo(1);
+      table.integer('raca_id').notNullable().defaultTo(1);
+      table.string('data_nascimento').nullable().defaultTo(1);
       table.boolean('castrado').nullable();
       table.string('necessidades_especiais').nullable();
       table.text('historia').nullable();
-      table.enum('status_animal', ['Disponivel', 'Adotado', 'Pendente']).notNullable();
+      table
+        .enum('status_animal', ['Disponivel', 'Adotado', 'Pendente'])
+        .notNullable()
+        .defaultTo('Disponivel');
       table.boolean('sociavel_animal').nullable();
       table.boolean('sociavel_pessoa').nullable();
-      table
-        .integer('ong_id')
-        .unsigned()
-        .references('id')
-        .inTable('ongs')
-        .notNullable()
-        .onDelete('CASCADE');
+      table.integer('ong_id');
 
       table.timestamp('created_at').notNullable();
       table.timestamp('updated_at').notNullable();

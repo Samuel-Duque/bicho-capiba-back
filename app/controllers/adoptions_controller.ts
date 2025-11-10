@@ -24,6 +24,17 @@ export default class AdoptionsController {
     }
   }
 
+  async store({ request, response, currentUser }: HttpContext) {
+    try {
+      const user = currentUser!;
+      const adopter = user as User;
+      const data = request.body();
+      const adoption = await AdoptionsService.create(data, adopter);
+
+      return responseWithSuccess(response, adoption);
+    } catch (error) {}
+  }
+
   // async show({ params }: HttpContext) {}
 
   async update({ params, request, response }: HttpContext) {

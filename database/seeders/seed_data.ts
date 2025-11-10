@@ -73,21 +73,21 @@ export default class SeedData extends BaseSeeder {
     const users = await User.createMany([
       {
         fullName: 'Carlos Oliveira',
-        email: 'carlos.oliveira@example.com',
+        email: 'ze@gmail.com',
         telefone: '11999999999',
-        password: 'password123',
+        password: 'secret123',
       },
       {
         fullName: 'Fernanda Lima',
         email: 'fernanda.lima@example.com',
         telefone: '21999999999',
-        password: 'password123',
+        password: 'secret123',
       },
       {
         fullName: 'Rafael Souza',
         email: 'rafael.souza@example.com',
         telefone: '31999999999',
-        password: 'password123',
+        password: 'secret123',
       },
     ]);
 
@@ -317,7 +317,6 @@ export default class SeedData extends BaseSeeder {
 
         return {
           nome: `${especie} ${index + 1}`,
-          idade: idade,
           sexo: (index % 2 === 0 ? 'M' : 'F') as 'M' | 'F',
           porte,
           cor: corName,

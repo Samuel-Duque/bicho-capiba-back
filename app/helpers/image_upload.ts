@@ -24,7 +24,7 @@ export default class ImageUpload {
       });
 
       const cdn = env.get('CLOUDFRONT_DOMAIN');
-      const fullUrl = `${cdn}${filePath}`;
+      const fullUrl = `https://${cdn}${filePath}`;
 
       return fullUrl;
     } catch (error) {

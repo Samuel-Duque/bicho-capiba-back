@@ -1,9 +1,10 @@
-import { BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm';
+import { belongsTo, column, hasMany } from '@adonisjs/lucid/orm';
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations';
 import Especie from './especie.js';
 import Animal from './animal.js';
+import UUIDBaseModel from './uuid.js';
 
-export default class Raca extends BaseModel {
+export default class Raca extends UUIDBaseModel {
   @column({ isPrimary: true, serializeAs: null })
   declare id: number;
 

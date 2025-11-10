@@ -60,12 +60,9 @@ export default class AuthController {
 
   async me({ response, currentUser }: HttpContext) {
     const cacheKey = `user:${currentUser?.uuid}`;
-    console.log('CACHE KEY', cacheKey);
-
     const cachedUser = await CacheManager.get(cacheKey);
 
     if (cachedUser) {
-      console.log('USANDO CACHE');
       return response.status(200).json(cachedUser);
     }
 

@@ -30,13 +30,13 @@ export default class AnimalsController {
         throw AppError.E_UNAUTHORIZED('Ong not authenticated');
       }
       const data = await request.validateUsing(RegisterAnimalValidator);
+      console.log(data);
       const animal = await AnimalsService.create(data, ong);
 
       return responseWithSuccess(response, animal);
     } catch (error) {
-      return response
-        .status(400)
-        .json({ message: 'Error creating animal', error: error });
+      console.log(error);
+      return response.status(400).json({ erro: error });
     }
   }
 
@@ -86,7 +86,7 @@ export default class AnimalsController {
       const { animalId } = params;
 
       const animal = await Animal.findByOrFail('uuid', animalId);
-      await user.related('favoriteAnimals').attach([animal.id]);
+      await user.related('likes').attach([animal.id]);
 
       return responseWithSuccess(response, {
         message: 'Animal adicionado aos favoritos com sucesso',
@@ -105,7 +105,7 @@ export default class AnimalsController {
       const { animalId } = params;
       const animal = await Animal.findByOrFail('uuid', animalId);
 
-      await user.related('favoriteAnimals').detach([animal.id]);
+      await user.related('likes').detach([animal.id]);
 
       return responseWithSuccess(response, {
         message: 'Animal removido dos favoritos com sucesso',
@@ -150,9 +150,10 @@ export default class AnimalsController {
     }
   }
 
-  async getFiltersData({ response }: HttpContext) {
+  async getFiltersData({ request, response }: HttpContext) {
     try {
-      const data = await AnimalsService.getFiltersData();
+      const filter = request.input('filter', null);
+      const data = await AnimalsService.getFiltersData(filter);
 
       return responseWithSuccess(response, data);
     } catch (error) {

@@ -44,11 +44,8 @@ export default class OngsController {
   }
   async update({ response, request, currentUser }: HttpContext) {
     try {
-      console.log(';;', currentUser);
       const user = currentUser as Ong;
       const data = await request.validateUsing(updateOngValidator);
-      console.log(data);
-      console.log(user);
       const ong = await OngsService.edit(user, data);
 
       return responseWithSuccess(response, ong);

@@ -8,9 +8,7 @@ type updateAdoption = {
 };
 
 export default class AdoptionsService {
-  // static async create (data: any, adopter: User, animalId: string){
-
-  // }
+  static async create(data: any, adopter: User) {}
 
   static async listByOng(ong: Ong, pagination: { page: number; limit: number }) {
     const adoptions = await ong

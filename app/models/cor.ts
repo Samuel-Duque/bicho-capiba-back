@@ -1,6 +1,7 @@
-import { BaseModel, column } from '@adonisjs/lucid/orm';
+import { column } from '@adonisjs/lucid/orm';
+import UUIDBaseModel from './uuid.js';
 
-export default class Cor extends BaseModel {
+export default class Cor extends UUIDBaseModel {
   public static table = 'cores';
 
   @column({ isPrimary: true, serializeAs: null })
