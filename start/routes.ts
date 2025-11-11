@@ -14,6 +14,7 @@ import animalsRoutes from './routes/animal_routes.js';
 import likeRoutes from './routes/like_routes.js';
 import adoptionRoutes from './routes/adoption_routes.js';
 import helperRoutes from './routes/helper_routes.js';
+import userRoutes from './routes/user_routes.js';
 
 router.get('/', async () => {
   return {
@@ -24,6 +25,7 @@ router.get('/', async () => {
 router
   .group(() => {
     authRoutes();
+    userRoutes();
     ongsRoutes(); // Add jwt auth after finishing development.
     animalsRoutes(); // Add jwt auth after finishing development.
     adoptionRoutes();

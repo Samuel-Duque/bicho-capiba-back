@@ -1,5 +1,6 @@
 import User from '#models/user';
 import UsersService from '#services/users_service';
+import { updateUserValidator } from '#validators/update_user';
 import type { HttpContext } from '@adonisjs/core/http';
 
 export default class UsersController {
@@ -40,10 +41,15 @@ export default class UsersController {
     }
   }
 
-  async update({ response }: HttpContext) {
+  async update({ request, response, currentUser }: HttpContext) {
     try {
+      const user = currentUser as User;
+
+      const data = await request.validateUsing(updateUserValidator);
+      const updatedUser = await UsersService.edit(data, user);
+      return response.status(200).json(updatedUser);
     } catch (error) {
-      return response.status(error.status).json(error.message);
+      return response.status(error.status).json(error);
     }
   }
 

@@ -16,8 +16,7 @@ export default class UsersService {
     return user;
   }
 
-  static async edit(UserId: string, data: any) {
-    const user = await User.findByOrFail('uuid', UserId);
+  static async edit(data: any, user: User) {
     user.merge(data);
     await user.save();
 

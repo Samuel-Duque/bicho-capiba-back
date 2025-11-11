@@ -72,10 +72,17 @@ export default class SeedData extends BaseSeeder {
 
     const users = await User.createMany([
       {
-        fullName: 'Carlos Oliveira',
+        fullName: 'José Vinicius do Carmo de Andrade',
         email: 'ze@gmail.com',
         telefone: '11999999999',
         password: 'secret123',
+        cpf: '12345678901',
+        bairro: 'Centro',
+        cidade: 'Recife',
+        estado: 'PE',
+        cep: '50010000',
+        complemento: null,
+        rua: 'Rua Nova',
       },
       {
         fullName: 'Fernanda Lima',

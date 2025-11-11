@@ -45,7 +45,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
         message: 'Erro interno do servidor',
         error: {
           message: error.message,
-          // stack: error.stack
+          stack: error.stack,
         },
       });
     }
