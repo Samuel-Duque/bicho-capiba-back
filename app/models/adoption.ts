@@ -22,7 +22,7 @@ export default class Adoption extends UUIDBaseModel {
   declare status: AdoptionStatus;
 
   @column()
-  declare mensagem?: string;
+  declare motivo: string | null;
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime;

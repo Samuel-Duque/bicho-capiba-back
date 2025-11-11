@@ -201,19 +201,6 @@ export default class SeedData extends BaseSeeder {
       corByName[(c as any).nome] = c;
     }
 
-    const bairrosPE = [
-      'Boa Viagem',
-      'Casa Forte',
-      'Aflitos',
-      'Boa Vista',
-      'Espinheiro',
-      'Tamarineira',
-      'Pina',
-      'Graças',
-      'Casa Amarela',
-      'Derby',
-    ];
-
     const especies = ['Coelho', 'Gato', 'Cachorro', 'Equino', 'Roedor'];
 
     const vacinasPossiveis = [
@@ -242,42 +229,34 @@ export default class SeedData extends BaseSeeder {
 
     const idadesPossiveis = ['0.5', '1', '2', '3', '4', '6', '8', '10', '12', '18'];
 
+    // Nomes personalizados para cada animal (um de cada espécie)
+    const nomesPersonalizados = ['Fredo', 'Luna', 'Rex', 'Spirit', 'Pipoca'];
+
+    // Histórias detalhadas e extensas para cada animal
+    const historiasDetalhadas: string[] = [
+      // Fredo o Coelho
+      `Fredo foi resgatado em situação de extrema negligência no bairro Boa Viagem, Recife. Quando nossa equipe o encontrou, ele estava confinado em uma caixa minúscula, sem acesso à água limpa ou alimentação adequada. Seu pelo estava emaranhado e sua postura revelava medo profundo. Desde então, Fredo passou por uma transformação incrível em nosso abrigo. Com paciência e cuidados veterinários, ele descobriu a alegria de saltar livremente em um espaço amplo e se aninhar em ninhos macios. Apesar de inicialmente tímido, Fredo hoje demonstra uma curiosidade saudável e se aproxima de tutores pacientes para receber carinhos delicados. Ele adora cenouras frescas e folhas de rúcula, e tem um hábito adorável de fazer 'binkies' (saltos de alegria) quando feliz. Fredo se dá bem com outros coelhos de temperamento calmo, mas aprecia momentos de solitude. Procuramos uma família que entenda suas necessidades específicas: espaço seguro para explorar, dieta balanceada com feno de qualidade, e muita paciência para continuar construindo sua confiança. Ele é ideal para tutores que desejam um companheiro tranquilo e observador, capaz de formar laços profundos com aqueles que respeitam seu ritmo. Fredo merece um lar onde possa finalmente experimentar a segurança e o amor que lhe foram negados por tanto tempo.`,
+
+      // Luna a Gata
+      `Luna foi resgatada das ruas do bairro Casa Forte, Recife, durante uma noite de chuva torrencial. Ela estava escondida sob um carro, faminta e com um olho infectado que exigiu cuidados veterinários imediatos. Nossa equipe a trouxe para o abrigo, onde ela recebeu tratamento intensivo e muito carinho. Inicialmente desconfiada, Luna demorou semanas para permitir que alguém a tocasse, mas hoje ela é uma gata que ronrona alto e pede carinhos com cabeçadas suaves. Luna tem aproximadamente 2 anos e desenvolveu uma personalidade única: ela é independente mas ama companhia, brincalhona mas respeita seus momentos de descanso. Adora caçar brinquedos de penas, dormir em locais altos e observar o mundo pela janela. Luna se socializa bem com outros gatos, especialmente os mais calmos, e tolera cães de pequeno porte desde que devidamente apresentados. Ela é perfeita para um lar que aprecie a dualidade de um felino: companheira presente que também valoriza seu espaço pessoal. Luna está castrada, vacinada e pronta para oferecer anos de cumplicidade e momentos de pura fofura à sua nova família. Procuramos adotantes que entendam a jornada de resiliência dela e estejam comprometidos com um relacionamento baseado em paciência e respeito mútuo.`,
+
+      // Rex o Cachorro
+      `Rex foi encontrado vagando desorientado pelas ruas do bairro Aflitos, Recife, com sinais evidentes de abandono e subnutrição. Seu pelo estava encardido, seus olhos tristes revelavam a confusão de um cão que um dia soube o que era ter um lar. Apesar do trauma, Rex nunca perdeu sua capacidade de amar. Desde o resgate, ele se transformou no cão mais grato e leal que já tivemos em nosso abrigo. Rex tem aproximadamente 4 anos e é um cão de porte médio com uma energia equilibrada. Adora passeios matinais, aprender novos comandos (é muito inteligente!) e receber abraços apertados. Seu rabo não para de balançar quando vê pessoas, e ele tem um talento especial para consolar quem está triste. Rex se dá bem com crianças respeitosas, outros cães sociáveis e até gatos curiosos. Ele é castrado, vacinado e tem um histórico de saúde impecável. Procuramos uma família ativa que possa incluí-lo em aventuras ao ar livre, mas que também valorize momentos de conexão tranquila no sofá. Rex tem muito amor para dar e promete ser o companheiro mais fiel que você poderia desejar - seu olhar de gratidão diz tudo o que suas palavras não podem expressar. Ele merece um lar definitivo onde possa envelhecer com dignidade e carinho.`,
+
+      // Spirit o Cavalo
+      `Spirit é um cavalo de aproximadamente 8 anos que foi resgatado de uma propriedade rural próxima ao bairro Boa Vista, Recife, onde vivia em condições de maus-tratos. Ele foi encontrado em um piquete sem sombra, com água suja e pouca alimentação, seu corpo magro revelava longos períodos de negligência. Spirit, no entanto, carrega uma dignidade indescritível em seu porte. Desde sua recuperação em nosso santuário, ele revelou ser um equino de temperamento dócil, inteligente e profundamente sensível. Spirit se conecta com humanos que demonstram calma e respeito, respondendo bem a tratamento baseado em reforço positivo. Ele tem uma andadura suave e aprecia caminhadas em trilhas tranquilas, mostrando-se curioso sobre o ambiente sem ser assustadiço. Spirit convive bem com outros equinos e mulas, estabelecendo hierarquia de forma pacífica. Recomendamos um lar com experiência em cuidados equinos, espaço adequado (piquete com pasto e abrigo), e comprometimento com sua dieta balanceada e cuidados veterinários regulares. Spirit não é adequado para trabalho pesado, mas pode ser um parceiro maravilhoso para atividades de lazer e terapia equina. Seu olhar expressa uma sabedoria adquirida através da adversidade, e ele busca alguém que veja além de sua história difícil para o coração nobre que ele possui. Adotar Spirit é um compromisso sério, mas recompensador para aqueles que entendem a majestade e as necessidades específicas dos equinos.`,
+
+      // Pipoca o Porquinho-da-índia
+      `Pipoca é um porquinho-da-índia de aproximadamente 1 ano, resgatado de um apartamento no bairro Tamarineira, Recife, onde vivia em uma gaiola minúscula sem ventilação adequada. Sua família original o abandonou quando se mudou, deixando-o para trás sem comida ou água. Nossa equipe o encontrou após denúncia de vizinhos que ouviam seus chamados angustiados. Desde então, Pipoca se transformou em um roedor vibrante e cheio de personalidade. Ele adora explorar seus túneis de papelão, aprender truques simples para ganhar cenoura, e receber carinhos na barriga quando confia em seu tutor. Pipoca tem uma vocalização única: ele 'cui cui' quando excitado e ronrona suavemente quando relaxado. É social com outros porquinhos-da-índia e se beneficia de companhia da mesma espécie. Recomendamos que seja adotado em dupla ou para quem já tenha outro porquinho. Pipoca requer espaço adequado (gaiola de pelo menos 120cm), dieta rica em vitamina C, e estimulação mental diária. Ele é ideal para famílias com crianças que aprendem responsabilidade, ou adultos que apreciam animais pequenos com grandes personalidades. Adotar Pipoca significa comprometer-se com sua expectativa de vida de 5-7 anos, fornecendo cuidados específicos e muito amor em miniatura. Ele prova que o tamanho físico não limita a capacidade de conquistar corações.`,
+    ];
+
     const animals = await Animal.createMany(
       Array.from({ length: 5 }).map((_, index) => {
         const especie = especies[index % especies.length];
-        const bairro = bairrosPE[index % bairrosPE.length];
         const idade = idadesPossiveis[index % idadesPossiveis.length];
         const idadeFloat = parseFloat(idade);
         const yearsMs = Math.floor(idadeFloat * 365 * 24 * 60 * 60 * 1000);
         const nascimento = new Date(Date.now() - yearsMs).toISOString().split('T')[0];
-
-        const historiasPorEspecie: Record<string, string[]> = {
-          Coelho: [
-            `Encontrado em um quintal no bairro ${bairro} - PE. Adora cenouras e um cantinho com capim para roer. Muito dócil e procura um lar tranquilo.`,
-            `Pequeno saltitante dos jardins de ${bairro}, PE. Carinhoso e esperto, ideal para quem quer companhia calma.`,
-          ],
-          Gato: [
-            `Miau! Morador do beco florido em ${bairro}, PE. Adora subir em armários e ganhar petiscos. Muito carinhoso com quem vira amigo.`,
-            `Gatinho arteiro do ${bairro}, PE que gosta de brincar com novelos e tirar sonecas ao sol. Ideal para quem procura companhia divertida.`,
-          ],
-          Cachorro: [
-            `Companheiro fiel das caminhadas pelo ${bairro}, PE. Ama correr na praia imaginária e receber carinho. Está vacinado e pronto para adoção.`,
-            `Amigo do povo do ${bairro}, PE. Brincalhão e leal, adora crianças e passeios longos.`,
-          ],
-          Equino: [
-            `Cavalo sereno encontrado em uma fazenda próxima ao ${bairro}, PE. Forte, dócil e com olhar sábio — ideal para quem tem espaço e carinho.`,
-            `Equino tranquilo que trabalhou em trilhas pela região de ${bairro}, PE. Busca um lar com espaço ao ar livre e atenção.`,
-          ],
-          Roedor: [
-            `Pequeno roedor curioso dos arredores de ${bairro}, PE. Adora esconder petiscos e explorar túneis. Perfeito para quem gosta de cuidados delicados.`,
-            `Roedor simpático que vive entre jardins em ${bairro}, PE. Fácil de cuidar e ótimo para apartamentos pequenos.`,
-          ],
-        };
-
-        const historiaOptions = historiasPorEspecie[especie] || [
-          `Resgatado em ${bairro} - PE.`,
-        ];
-        const historia = historiaOptions[index % historiaOptions.length];
 
         let porte: 'Pequeno' | 'Medio' | 'Grande' = ['Pequeno', 'Medio', 'Grande'][
           Math.floor(Math.random() * 3)
@@ -316,7 +295,7 @@ export default class SeedData extends BaseSeeder {
         }
 
         return {
-          nome: `${especie} ${index + 1}`,
+          nome: nomesPersonalizados[index],
           sexo: (index % 2 === 0 ? 'M' : 'F') as 'M' | 'F',
           porte,
           cor: corName,
@@ -333,7 +312,7 @@ export default class SeedData extends BaseSeeder {
             especie === 'Gato' || especie === 'Cachorro' ? Math.random() > 0.3 : null,
           necessidadesEspeciais:
             Math.random() > 0.9 ? 'Requer medicamentos diários' : null,
-          historia,
+          historia: historiasDetalhadas[index],
           sociavelAnimal: Math.random() > 0.4,
           sociavelPessoa: Math.random() > 0.4,
           dataNascimento: nascimento,
@@ -373,14 +352,6 @@ export default class SeedData extends BaseSeeder {
         'https://img.olx.com.br/images/49/497596817812559.webp',
       ],
     ];
-
-    // const especieToKeyword: Record<string, string> = {
-    //   Coelho: 'rabbit',
-    //   Gato: 'cat',
-    //   Cachorro: 'dog',
-    //   Equino: 'horse',
-    //   Roedor: 'rodent',
-    // };
 
     for (const [idx, animal] of animals.entries()) {
       const manualUrls = photoUrlsList[idx] || [];

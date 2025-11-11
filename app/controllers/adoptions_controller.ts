@@ -4,6 +4,7 @@ import { responseWithPagination, responseWithSuccess } from '../helpers/api_resp
 import User from '#models/user';
 import AdoptionsService from '#services/adoptions_service';
 import { updateAdoptionValidator } from '#validators/update_adoption';
+import { CreateAdoptionValidator } from '#validators/create_adoption';
 
 export default class AdoptionsController {
   async index({ request, response, currentUser }: HttpContext) {
@@ -11,7 +12,7 @@ export default class AdoptionsController {
     const page = request.input('page', 1);
     const limit = request.input('limit', 10);
 
-    if (user as Ong) {
+    if (user instanceof Ong) {
       const ong = user as Ong;
       const adoptions = await AdoptionsService.listByOng(ong, { page, limit });
 
@@ -28,8 +29,8 @@ export default class AdoptionsController {
     try {
       const user = currentUser!;
       const adopter = user as User;
-      const { animal_id } = request.body();
-      const adoption = await AdoptionsService.create(animal_id, adopter);
+      const data = await request.validateUsing(CreateAdoptionValidator);
+      const adoption = await AdoptionsService.create(data, adopter);
 
       return responseWithSuccess(response, adoption);
     } catch (error) {

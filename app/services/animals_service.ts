@@ -131,9 +131,9 @@ export default class AnimalsService {
     const cacheKey = `user:${user.id}:likedAnimals`;
     const cache = await CacheManager.get(cacheKey);
 
-    // if (cache) {
-    //   return cache;
-    // }
+    if (cache) {
+      return cache;
+    }
 
     const likedAnimals = await user
       .related('likes')

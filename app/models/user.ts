@@ -34,6 +34,9 @@ export default class User extends compose(UUIDBaseModel, AuthFinder) {
   declare numero: string | null;
 
   @column()
+  declare bairro: string | null;
+
+  @column()
   declare cidade: string | null;
 
   @column()
