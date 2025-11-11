@@ -108,4 +108,14 @@ export default class OngsService {
     await ong.save();
     return ong;
   }
+
+  static async listAnimalsByOng(ong: Ong) {
+    await ong.load('animals', (animalQuery) => {
+      animalQuery.whereNull('deleted_at').preload('fotos', (fotoQuery) => {
+        fotoQuery.whereNull('deleted_at').select('id', 'url');
+      });
+    });
+
+    return ong.animals;
+  }
 }

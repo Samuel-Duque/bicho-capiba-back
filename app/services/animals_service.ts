@@ -172,8 +172,8 @@ export default class AnimalsService {
 
   static async getFiltersData(filter?: string | null) {
     const especies = await Especie.query().preload('racas');
-    const cores = await Cor.query().select('nome', 'hexadecimal');
-    const vacinas = await Vacina.query().select('nome');
+    const cores = await Cor.all();
+    const vacinas = await Vacina.all();
 
     if (filter === 'especies') {
       return { especies };

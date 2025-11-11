@@ -9,6 +9,7 @@ export default function ongsRoutes() {
       router.get('/', [OngController, 'index']);
       router.post('/', [OngController, 'store']).use(middleware.optionalAuth());
       router.put('/', [OngController, 'update']).use(middleware.jwt());
+      router.get('/animals', [OngController, 'listOngAnimals']).use(middleware.jwt());
       router.get('/:id', [OngController, 'show']);
       router.delete('/:id', [OngController, 'delete']).use(middleware.jwt());
     })

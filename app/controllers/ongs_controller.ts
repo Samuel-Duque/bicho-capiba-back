@@ -8,6 +8,7 @@ import {
 } from '../helpers/api_response.js';
 import { updateOngValidator } from '#validators/update_ong';
 import Ong from '#models/ong';
+import AppError from '../helpers/app_error.js';
 // AppError not used here
 
 export default class OngsController {
@@ -45,12 +46,14 @@ export default class OngsController {
   async update({ response, request, currentUser }: HttpContext) {
     try {
       const user = currentUser as Ong;
+      if (user instanceof Ong === false) {
+        throw AppError.E_UNAUTHORIZED('Ong not authenticated');
+      }
       const data = await request.validateUsing(updateOngValidator);
       const ong = await OngsService.edit(user, data);
 
       return responseWithSuccess(response, ong);
     } catch (error) {
-      console.log(error);
       return responseWithError(response, error);
     }
   }
@@ -62,6 +65,21 @@ export default class OngsController {
       return responseWithSuccess(response, ong);
     } catch (error) {
       return response.status(error.status).json(error.message);
+    }
+  }
+
+  async listOngAnimals({ response, currentUser }: HttpContext) {
+    try {
+      const ong = currentUser as Ong;
+      if (ong instanceof Ong === false) {
+        throw AppError.E_UNAUTHORIZED('Ong not authenticated');
+      }
+
+      const animals = await OngsService.listAnimalsByOng(ong);
+
+      return responseWithSuccess(response, animals);
+    } catch (error) {
+      return responseWithError(response, error);
     }
   }
 }
