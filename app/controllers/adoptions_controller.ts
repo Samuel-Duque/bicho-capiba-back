@@ -32,7 +32,11 @@ export default class AdoptionsController {
       const adoption = await AdoptionsService.create(data, adopter);
 
       return responseWithSuccess(response, adoption);
-    } catch (error) {}
+    } catch (error) {
+      return response
+        .status(400)
+        .json({ message: 'Error creating adoption', error: error.message });
+    }
   }
 
   // async show({ params }: HttpContext) {}
