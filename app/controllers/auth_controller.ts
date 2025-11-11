@@ -48,7 +48,7 @@ export default class AuthController {
     const authUser = user! || ong!;
     const token = JwtService.generateToken(authUser);
     JwtService.setAuthCoookie({ response } as HttpContext, token);
-
+    console.log('Auth User:', authUser);
     return response.status(200).json({ authUser, token });
   }
 

@@ -10,13 +10,13 @@ export default class JwtService {
   private static readonly COOKIE_NAME = 'auth_token';
 
   static generateToken(user: User | Ong): string {
-    if (user as User) {
+    if (user instanceof User) {
       return jwt.sign({ userId: user.uuid, email: user.email }, this.JWT_SECRET, {
         expiresIn: this.JWT_EXPIRES_IN,
       });
     }
 
-    if (user as Ong) {
+    if (user instanceof Ong) {
       return jwt.sign({ userId: user.uuid, email: user.email }, this.JWT_SECRET, {
         expiresIn: this.JWT_EXPIRES_IN,
       });
