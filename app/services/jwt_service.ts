@@ -7,7 +7,7 @@ import Ong from '#models/ong';
 export default class JwtService {
   private static readonly JWT_SECRET = env.get('APP_KEY');
   private static readonly JWT_EXPIRES_IN = '30d';
-  private static readonly COOKIE_NAME = 'ze_token';
+  private static readonly COOKIE_NAME = 'auth_token';
 
   static generateToken(user: User | Ong): string {
     if (user as User) {
