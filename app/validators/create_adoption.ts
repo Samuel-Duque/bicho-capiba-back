@@ -14,7 +14,7 @@ export const CreateAdoptionValidator = vine.compile(
     possui_criancas: vine.boolean(),
     quantidade_criancas: vine.string().trim().optional(),
     faixa_etaria_criancas: vine.string().trim().optional(),
-    crianca_necessidade_especial: vine.boolean(),
+    crianca_necessidade_especial: vine.boolean().optional(),
     tipo_necessidade_criancas: vine.string().trim().optional(),
 
     familiar_necessidade_especial: vine.boolean(),
@@ -26,7 +26,7 @@ export const CreateAdoptionValidator = vine.compile(
     sexo_animais: vine.string().trim().optional(),
 
     experiencia_com_animais: vine.boolean(),
-    comportamento_animais: vine.string().trim(),
+    comportamento_animais: vine.string().trim().optional(),
     conhecimento_despesas_animais: vine.boolean(),
 
     tempo_disponivel: vine.string().trim(),

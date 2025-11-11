@@ -34,6 +34,7 @@ export default class AdoptionsController {
 
       return responseWithSuccess(response, adoption);
     } catch (error) {
+      console.log(error);
       return response
         .status(400)
         .json({ message: 'Error creating adoption', error: error.message });
