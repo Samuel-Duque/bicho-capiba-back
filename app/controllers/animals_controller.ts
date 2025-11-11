@@ -29,8 +29,8 @@ export default class AnimalsController {
       if (!ong) {
         throw AppError.E_UNAUTHORIZED('Ong not authenticated');
       }
+
       const data = await request.validateUsing(RegisterAnimalValidator);
-      console.log(data);
       const animal = await AnimalsService.create(data, ong);
 
       return responseWithSuccess(response, animal);

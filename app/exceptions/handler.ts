@@ -1,6 +1,7 @@
 import app from '@adonisjs/core/services/app';
 import { HttpContext, ExceptionHandler } from '@adonisjs/core/http';
 import { errors } from '@vinejs/vine';
+import { errors as httpErrors } from '@adonisjs/core/http';
 
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
@@ -14,11 +15,38 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * response to the client
    */
   async handle(error: unknown, ctx: HttpContext) {
+    // Erros de validação do VineJS
     if (error instanceof errors.E_VALIDATION_ERROR) {
       return ctx.response.status(422).json({
         status: 'ERROR',
         message: 'Erro de validação',
         errors: error.messages,
+      });
+    }
+
+    if (error instanceof httpErrors.E_HTTP_EXCEPTION) {
+      return ctx.response.status(error.status).json({
+        status: 'ERROR',
+        message: error.message,
+      });
+    }
+
+    if (error instanceof Error) {
+      // Em produção, não expor detalhes do erro
+      if (app.inProduction) {
+        return ctx.response.status(500).json({
+          status: 'ERROR',
+          message: 'Erro interno do servidor',
+        });
+      }
+
+      return ctx.response.status(500).json({
+        status: 'ERROR',
+        message: 'Erro interno do servidor',
+        error: {
+          message: error.message,
+          // stack: error.stack
+        },
       });
     }
 

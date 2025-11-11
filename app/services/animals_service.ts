@@ -33,7 +33,7 @@ export default class AnimalsService {
     if (data.images) {
       for (const image of data.images) {
         const imageName = await ImageUpload.upload(image, 'animals');
-        console.log(imageName);
+
         await animal.related('fotos').create({ url: imageName });
       }
     }
@@ -131,9 +131,9 @@ export default class AnimalsService {
     const cacheKey = `user:${user.id}:likedAnimals`;
     const cache = await CacheManager.get(cacheKey);
 
-    if (cache) {
-      return cache;
-    }
+    // if (cache) {
+    //   return cache;
+    // }
 
     const likedAnimals = await user
       .related('likes')
@@ -144,6 +144,9 @@ export default class AnimalsService {
       .preload('ong', (q) => {
         q.select('id', 'nome', 'email', 'telefone', 'bairro');
       })
+      .preload('raca')
+      .preload('especie')
+      .preload('cor')
       .paginate(pagination.page, pagination.limit);
 
     await CacheManager.create(cacheKey, JSON.stringify(likedAnimals));

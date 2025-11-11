@@ -28,8 +28,8 @@ export default class AdoptionsController {
     try {
       const user = currentUser!;
       const adopter = user as User;
-      const data = request.body();
-      const adoption = await AdoptionsService.create(data, adopter);
+      const { animal_id } = request.body();
+      const adoption = await AdoptionsService.create(animal_id, adopter);
 
       return responseWithSuccess(response, adoption);
     } catch (error) {
