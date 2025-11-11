@@ -12,7 +12,7 @@ export const RegisterAnimalValidator = vine.compile(
     vacinas: vine.array(vine.string()).optional(), // Opcional
     castrado: vine.boolean().optional(),
     necessidades_especiais: vine.string().maxLength(200).optional(), // Opcional
-    historia: vine.string().maxLength(1000).optional(), // Opcional
+    historia: vine.string().maxLength(2000).optional(), // Opcional
     sociavel_animal: vine.boolean().optional(), // Opcional
     sociavel_pessoa: vine.boolean().optional(), // Opcional
     images: vine.array(vine.file().optional()), // Opcional
